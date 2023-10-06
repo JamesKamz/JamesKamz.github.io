@@ -421,9 +421,10 @@ section {
 .about-content p{
     color:var(--text-color);
     font-weight: 400;
-    margin-bottom: 1.5rem;
-    letter-spacing: 1;
-    word-spacing: 2;
+    margin-bottom: .5rem;
+    letter-spacing: 1px;
+    line-height: 1.7cqmax;
+    word-spacing: 2.4px;
     text-align: justify;
 }
 
@@ -544,9 +545,10 @@ section {
     padding: 0 1rem;
     margin: .5rem 0 1rem 0;
     font-weight: 400;
-    letter-spacing: 1.1px;
+    letter-spacing: 1.2px;
+    word-spacing: 2.3px;
     color: var(--text2-color);
-    line-height: 1;
+    line-height: 1.5cqmax;
 }
 
 /* skills */
@@ -609,27 +611,27 @@ section {
 }
 
 .skill-bar .bar .python {
-    width: 80%;
+    width: 79%;
     animation: python 2s;
 }
 
 .skill-bar .bar .htmlcss{
-    width: 89%;
+    width: 90%;
     animation: htmlcss 2.5s;
 }
 
 .skill-bar .bar .bootstrap {
-    width: 90%;
+    width: 75%;
     animation: bootstrap 3s;
 }
 
 .skill-bar .bar .javascript {
-    width: 75%;
+    width: 70%;
     animation: javascript 3.5s;
 }
 
 .skill-bar .bar .angular {
-    width: 69%;
+    width: 60%;
     animation: angular 4s;
 }
 
@@ -1064,7 +1066,7 @@ footer a i{
         width: 0%;
     }
     100%{
-        width: 80%;
+        width: 79%;
     }
 }
 
@@ -1073,7 +1075,7 @@ footer a i{
         width: 0%;
     }
     100%{
-        width: 89%;
+        width: 90%;
     }
 }
 
@@ -1082,7 +1084,7 @@ footer a i{
         width: 0%;
     }
     100%{
-        width: 90%;
+        width: 75%;
     }
 }
 
@@ -1091,7 +1093,7 @@ footer a i{
         width: 0%;
     }
     100%{
-        width: 69%;
+        width: 60%;
     }
 }
 
@@ -1100,7 +1102,7 @@ footer a i{
         width: 0%;
     }
     100%{
-        width: 75%;
+        width: 70%;
     }
 }
 
