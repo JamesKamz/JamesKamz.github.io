@@ -11,13 +11,13 @@
 }
 
 :root{
-    --text-color: #f5f5f5;
+    --text-color: #0c0c0c;
     --hover-color: #5498eb;
-    --text2-color:#bdbdbd;
-    --bg-color: #242424;
-    --second-bg-color: #1b1e22;
+    --text2-color: #1b1e22;
+    --bg-color:#f5f5f5;
+    --second-bg-color: #bdbdbd;
     --big-font: 2.5rem;
-    --contact-color:rgb(255,255,255,.35);
+    --contact-color: rgb(0,0,0,.5);
     --norma-font: 2rem;
     --neon-box-shadow: 0 0 .5rem #5498eb;
     --h2-font: 3rem;
@@ -32,12 +32,12 @@
 }
 
 .darkmode{
-    --bg-color: #f5f5f5;
+    --bg-color: #242424 ;
     --hover-color: #5498eb;
-    --second-bg-color:#bdbdbd;
-    --text-color: #242424;
-    --text2-color: #1b1e22;
-    --contact-color:rgb(0,0,0,.5);
+    --second-bg-color: #1b1e22;
+    --text-color:#bdbdbd;
+    --text2-color:#242424 ;
+    --contact-color:rgb(255,255,255,.35);
 }
 
 ::-webkit-scrollbar{

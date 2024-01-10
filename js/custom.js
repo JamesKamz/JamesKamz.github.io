@@ -144,7 +144,7 @@ scrollTop.forEach((el)=>observer.observe(el));
 // dark mode
 let darkModeIcon = document.querySelector('#darkmode-icon');
 darkModeIcon.onclick =()=>{
-    darkModeIcon.classList.toggle('bxs-moon');
+    darkModeIcon.classList.toggle('bxs-sun');
     document.body.classList.toggle('darkmode')
 }
 
