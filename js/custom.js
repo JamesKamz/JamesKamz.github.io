@@ -1,27 +1,40 @@
-// send message with Email.js
-function sendMail() {
-    var params = {
-        sendername: document.getElementById("name").value,
-        senderemail: document.getElementById("email").value,
-        sendernumber: document.getElementById("number").value,
-        subject: document.getElementById("subject").value,
-        message: document.getElementById("message").value
-    };
-    const serviceID = "service_7cmfh6d";
-    const templateID = "template_0cc1nng";
-    emailjs.send(serviceID, templateID, params)
-    .then((res) =>{
-        document.getElementById("name").value="";
-        document.getElementById("email").value="";
-        document.getElementById("number").value="";
-        document.getElementById("subject").value="";
-        document.getElementById("message").value="";
-        console.log(res);
-        alert('Thank you, ' + params['sendername'] + '! your message has sent.');
-    })
-    .catch(error=> {
-        console.error("Email failed to send:", error);
-    });
+// open default email app with prefilled contact message
+function sendMail(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    // Validation
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const number = document.getElementById("number").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !number || !subject || !message) {
+        alert("❌ Veuillez remplir tous les champs du formulaire");
+        return;
+    }
+
+    // Email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("❌ Veuillez entrer une adresse email valide");
+        return;
+    }
+
+    const to = "jameskamzk@gmail.com";
+    const emailSubject = `[Portfolio] ${subject}`;
+    const emailBody =
+        `Nom: ${name}\n` +
+        `Email: ${email}\n` +
+        `Telephone: ${number}\n\n` +
+        `Message:\n${message}`;
+
+    const mailtoUrl =
+        `mailto:${to}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    window.location.href = mailtoUrl;
 }
 
 // text change 
@@ -82,7 +95,9 @@ circles.forEach(elem=>{
 });
 
 // mix it up portfolio section
-var mixer = mixitup('.portfolio-gallery');
+if (typeof mixitup === 'function' && document.querySelector('.portfolio-gallery')) {
+    var mixer = mixitup('.portfolio-gallery');
+}
 
 
 // active menu
@@ -109,43 +124,53 @@ window.addEventListener("scroll",function(){
 let menuIcon = document.querySelector("#icon-menu");
 let navlist = document.querySelector(".navbar");
 
-menuIcon.onclick =()=>{
-    menuIcon.classList.toggle("bx-x");
-    navlist.classList.toggle("open");
+if (menuIcon && navlist) {
+    menuIcon.onclick =()=>{
+        menuIcon.classList.toggle("bx-x");
+        navlist.classList.toggle("open");
+    }
 }
 
 
 window.onscroll=()=>{
-    menuIcon.classList.remove("bx-x");
-    navlist.classList.remove("open");
+    if (menuIcon && navlist) {
+        menuIcon.classList.remove("bx-x");
+        navlist.classList.remove("open");
+    }
 }
 
 // paralax
-
-const observer = new IntersectionObserver((entries)=>{
-    entries.forEach((entry)=>{
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show-items');
-        }else {
-            entry.target.classList.remove("show-items");
-        }
-    });
-});
-
 const scrollScale = document.querySelectorAll(".scroll-scale");
-scrollScale.forEach((el)=>observer.observe(el));
-
 const scrollBottom = document.querySelectorAll(".scroll-bottom");
-scrollBottom.forEach((el)=>observer.observe(el));
-
 const scrollTop = document.querySelectorAll(".scroll-top");
-scrollTop.forEach((el)=>observer.observe(el));
+
+if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=>{
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show-items');
+            }else {
+                entry.target.classList.remove("show-items");
+            }
+        });
+    });
+
+    scrollScale.forEach((el)=>observer.observe(el));
+    scrollBottom.forEach((el)=>observer.observe(el));
+    scrollTop.forEach((el)=>observer.observe(el));
+} else {
+    scrollScale.forEach((el)=>el.classList.add('show-items'));
+    scrollBottom.forEach((el)=>el.classList.add('show-items'));
+    scrollTop.forEach((el)=>el.classList.add('show-items'));
+}
 
 // dark mode
 let darkModeIcon = document.querySelector('#darkmode-icon');
-darkModeIcon.onclick =()=>{
-    darkModeIcon.classList.toggle('bxs-sun');
-    document.body.classList.toggle('darkmode')
+if (darkModeIcon) {
+    darkModeIcon.onclick =()=>{
+        darkModeIcon.classList.toggle('bxs-sun');
+        document.body.classList.toggle('darkmode')
+    }
 }
 
 //popup
