@@ -109,6 +109,35 @@ header{
     border-bottom: 1px solid rgba(148,163,184,.18);
 }
 
+/* language switch */
+.lang-switch{
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    z-index: 1;
+}
+
+#languages-select{
+    height: 42px;
+    padding: 0 10px;
+    background: rgba(255,255,255,.55);
+    font-weight: 700;
+    color: var(--text-color);
+    border: 1px solid rgba(148,163,184,.28);
+    border-radius: 999px;
+    font-size: .95rem;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(16,24,40,.08);
+    outline: none;
+}
+
+.darkmode #languages-select{
+    background: rgba(15,23,42,.82);
+    border-color: rgba(148,163,184,.18);
+    color: var(--text-color);
+}
+
 header.sticky{
     background: rgba(255, 250, 244, 0.94);
     border-bottom: 1px solid rgba(148,163,184,.28);
@@ -152,15 +181,6 @@ span{
 .navbar a:hover{
     color: var(--hover-color);
     background: rgba(217,119,6,.08);
-}
-
-#languages-select{
-    background: var(--bg-color);
-    font-weight: 400;
-    color: var(--text-color);
-    border: 2px solid var(--hover-color);
-    border-radius: 5px;
-    font-size: .95rem;
 }
 
 .lg{

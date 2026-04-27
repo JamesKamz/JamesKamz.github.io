@@ -24,15 +24,21 @@
     <!-- header  -->
     <header>
         <div class="logo"><span>J</span>ames<span>.K</span>amz</div>
+        <div class="lang-switch" aria-label="Sélecteur de langue">
+            <select id="languages-select" aria-label="Choisir la langue">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+            </select>
+        </div>
         <div id="darkmode-icon" class="bx bxs-moon"></div>
         <ul class="navbar">
-            <li><a href="#home" style="--i:1;">Accueil</a></li>
-            <li><a href="#skills" style="--i:4;">Compétences</a></li>
-            <li><a href="#services" style="--i:3;">Services</a></li>
-            <li><a href="#portfolio" style="--i:5;">Portfolio</a></li>
+            <li><a href="#home" style="--i:1;" data-i18n="nav.home">Accueil</a></li>
+            <li><a href="#skills" style="--i:4;" data-i18n="nav.skills">Compétences</a></li>
+            <li><a href="#services" style="--i:3;" data-i18n="nav.services">Services</a></li>
+            <li><a href="#portfolio" style="--i:5;" data-i18n="nav.portfolio">Portfolio</a></li>
             <!-- <li><a href="#blog" style="--i:6;">Blog</a></li> -->
-            <li><a href="#about" style="--i:2;">À propos</a></li>
-            <li><a href="#contact" style="--i:7;">Contact</a></li>
+            <li><a href="#about" style="--i:2;" data-i18n="nav.about">À propos</a></li>
+            <li><a href="#contact" style="--i:7;" data-i18n="nav.contact">Contact</a></li>
         </ul>
         <div id="icon-menu" class="bx bx-menu"></div>
     </header>
@@ -40,32 +46,31 @@
     <!-- home -->
     <section class="home scroll-top" id="home">
         <div class="home-content scroll-scale">
-            <h1>Salut, je suis Koffi Jacques Amouzou</h1>
+            <h1 data-i18n="home.title">Salut, je suis Koffi Jacques Amouzou</h1>
             <div class="text-change">
-                <h3>Je suis</h3>
+                <h3 data-i18n="home.iam">Je suis</h3>
                 <h3>
-                    <span class="content">Développeur&nbsp;Full-Stack</span>
-                    <span class="content">Développeur&nbsp;&&nbsp;Intégrateur&nbsp;Odoo</span>
-                    <span class="content">En&nbsp;Cybersécurité</span>
-                    <span class="content">Aspirant&nbsp;Data&nbsp;Engineer</span>
+                    <span class="content" data-i18n="home.role1">Développeur&nbsp;Full-Stack</span>
+                    <span class="content" data-i18n="home.role2">Développeur&nbsp;&&nbsp;Intégrateur&nbsp;Odoo</span>
+                    <span class="content" data-i18n="home.role3">En&nbsp;Cybersécurité</span>
+                    <span class="content" data-i18n="home.role4">Aspirant&nbsp;Data&nbsp;Engineer</span>
                 </h3>
             </div>
-            <p>Je conçois des applications web robustes, des intégrations Odoo sur mesure et des solutions numériques
+            <p data-i18n="home.subtitle">Je conçois des applications web robustes, des intégrations Odoo sur mesure et des solutions numériques
                 orientées performance, sécurité et valeur métier.</p>
             <div class="info">
                 <div class="email">
-                    <h5>Localisation :</h5>
+                    <h5 data-i18n="home.locationLabel">Localisation :</h5>
                     <span>Lomé, Togo</span>
                 </div>
                 <div class="username">
-                    <h5>Statut :</h5>
-                    <span>Disponible en freelance</span>
+                    <h5 data-i18n="home.statusLabel">Statut :</h5>
+                    <span data-i18n="home.statusValue">Disponible en freelance</span>
                 </div>
             </div>
             <div class="btn-box">
-                <a href="img/CV Koffi jacques Amouzou fr.pdf" target="_blank" class="btn">Télécharger mon CV</a>
-                <a href="https://www.linkedin.com/in/koffi-jacques-amouzou-662595234/" target="_blank" class="btn">Voir
-                    mon LinkedIn</a>
+                <a href="img/CV Koffi jacques Amouzou fr.pdf" target="_blank" class="btn" data-i18n="home.downloadCv">Télécharger mon CV</a>
+                <a href="https://www.linkedin.com/in/koffi-jacques-amouzou-662595234/" target="_blank" class="btn"><span data-i18n="home.viewLinkedin">Voir mon LinkedIn</span></a>
             </div>
             <div class="social-icons">
                 <a href="https://www.linkedin.com/in/koffi-jacques-amouzou-662595234/" target="_blank"><i
@@ -138,12 +143,12 @@
     <!-- skills -->
     <section class="skills" id="skills">
         <div class="main-text scroll-scale">
-            <span>Techniques et Professionnelles</span>
-            <h2>Mes compétences</h2>
+            <span data-i18n="skills.kicker">Techniques et Professionnelles</span>
+            <h2 data-i18n="skills.title">Mes compétences</h2>
         </div>
         <div class="skill-main">
             <div class="skill-left scroll-scale">
-                <h3>Compétences Techniques</h3>
+                <h3 data-i18n="skills.techTitle">Compétences Techniques</h3>
                 <div class="skill-bar">
                     <div class="infos">
                         <p>Python & Django & Rest Framework</p>
@@ -227,34 +232,34 @@
                 </div>
             </div>
             <div class="skill-right scroll-scale">
-                <h3>Compétences Professionnelles</h3>
+                <h3 data-i18n="skills.softTitle">Compétences Professionnelles</h3>
                 <div class="prof">
                     <div class="box">
                         <div class="circle" data-dots="80" data-percent="89"></div>
                         <div class="text">
                             <big>89%</big>
-                            <small>Rigueur</small>
+                            <small data-i18n="skills.soft.autonomy">Autonomie</small>
                         </div>
                     </div>
                     <div class="box">
                         <div class="circle" data-dots="80" data-percent="82"></div>
                         <div class="text">
                             <big>82%</big>
-                            <small>Créativité</small>
+                            <small data-i18n="skills.soft.creativity">Créativité</small>
                         </div>
                     </div>
                     <div class="box">
                         <div class="circle" data-dots="80" data-percent="90"></div>
                         <div class="text">
                             <big>90%</big>
-                            <small>Travail en équipe</small>
+                            <small data-i18n="skills.soft.teamwork">Travail en équipe</small>
                         </div>
                     </div>
                     <div class="box">
                         <div class="circle" data-dots="80" data-percent="80"></div>
                         <div class="text">
                             <big>80%</big>
-                            <small>Communication</small>
+                            <small data-i18n="skills.soft.communication">Communication</small>
                         </div>
                     </div>
                 </div>
@@ -265,46 +270,44 @@
     <!-- services -->
     <section class="services" id="services">
         <div class="main-text scroll-scale">
-            <span>Accompagnement sur mesure</span>
-            <h2>Ce que je propose</h2>
+            <span data-i18n="services.kicker">Accompagnement sur mesure</span>
+            <h2 data-i18n="services.title">Ce que je propose</h2>
         </div>
         <div class="services-layout scroll-bottom">
             <div class="service-box">
                 <i class="bx bx-desktop service-icon"></i>
-                <h3>Applications web</h3>
-                <p>Conception et développement d'applications web fiables, modernes et évolutives avec Django, React,
+                <h3 data-i18n="services.webapps.title">Applications web</h3>
+                <p data-i18n="services.webapps.desc">Conception et développement d'applications web fiables, modernes et évolutives avec Django, React,
                     Next.js, Angular, Bootstrap et HTML5/CSS3.</p>
                 <div class="btn-box service-btn">
-                    <a href="#contact" class="btn">Rendez-Vous</a>
+                    <a href="#contact" class="btn" data-i18n="common.cta">Rendez-Vous</a>
                 </div>
             </div>
             <div class="service-box">
                 <i class="bx bxs-layer service-icon"></i>
                 <h3>Odoo</h3>
-                <p>Intégration Odoo, développement et personnalisation de modules, maintenance et supervision de
-                    solutions Odoo pour optimiser vos processus métiers et gagner en productivité.
-                </p>
+                <p data-i18n="services.odoo.desc">Intégration Odoo, développement et personnalisation de modules, maintenance et supervision de
+                    solutions Odoo pour optimiser vos processus métiers et gagner en productivité.</p>
                 <div class="btn-box service-btn">
-                    <a href="#contact" class="btn">Rendez-Vous</a>
+                    <a href="#contact" class="btn" data-i18n="common.cta">Rendez-Vous</a>
                 </div>
             </div>
             <div class="service-box">
                 <i class="bx bx-code-alt service-icon"></i>
-                <h3>API & backend</h3>
-                <p>Développement d'API REST sécurisées avec Django Rest Framework, gestion des données et connexion
-                    fluide avec vos interfaces et services.
-                </p>
+                <h3 data-i18n="services.api.title">API & backend</h3>
+                <p data-i18n="services.api.desc">Développement d'API REST sécurisées avec Django Rest Framework, gestion des données et connexion
+                    fluide avec vos interfaces et services.</p>
                 <div class="btn-box service-btn">
-                    <a href="#contact" class="btn">Rendez-Vous</a>
+                    <a href="#contact" class="btn" data-i18n="common.cta">Rendez-Vous</a>
                 </div>
             </div>
             <div class="service-box">
                 <i class='bx bxl-wordpress service-icon'></i>
-                <h3>WordPress & sécurité</h3>
-                <p>Création de sites WordPress professionnels, optimisation, maintenance et bonnes pratiques de sécurité
+                <h3 data-i18n="services.wp.title">WordPress & sécurité</h3>
+                <p data-i18n="services.wp.desc">Création de sites WordPress professionnels, optimisation, maintenance et bonnes pratiques de sécurité
                     pour des projets durables.</p>
                 <div class="btn-box service-btn">
-                    <a href="#contact" class="btn">Rendez-Vous</a>
+                    <a href="#contact" class="btn" data-i18n="common.cta">Rendez-Vous</a>
                 </div>
             </div>
         </div>
@@ -313,15 +316,15 @@
     <!-- portfolio -->
     <section class="portfolio" id="portfolio">
         <div class="main-text scroll-scale">
-            <span>Projets récents</span>
-            <h2>Mes réalisations</h2>
+            <span data-i18n="portfolio.kicker">Projets récents</span>
+            <h2 data-i18n="portfolio.title">Mes réalisations</h2>
         </div>
         <div class="container">
             <div class="filter-buttons scroll-scale">
-                <button class="button" data-filter="all">Tous</button>
-                <button class="button" data-filter=".siteweb">App. Web</button>
-                <button class="button" data-filter=".api">API & Backend</button>
-                <button class="button" data-filter=".design">Designs</button>
+                <button class="button" data-filter="all" data-i18n="portfolio.filters.all">Tous</button>
+                <button class="button" data-filter=".siteweb" data-i18n="portfolio.filters.web">App. Web</button>
+                <button class="button" data-filter=".api" data-i18n="portfolio.filters.api">API & Backend</button>
+                <button class="button" data-filter=".design" data-i18n="portfolio.filters.design">Designs</button>
             </div>
             <div class="portfolio-gallery scroll-bottom">
                 <div class="portfolio-box mix siteweb design">
@@ -330,7 +333,7 @@
                     </div>
                     <div class="port-content">
                         <h3>Ele Afrika</h3>
-                        <p>Plateforme E-commerce de Print on demande avec Next.js & Django</p>
+                        <p>Plateforme de Print on demande avec Next.js & Django</p>
                         <a href="https://eleafrika.com/" target="_blank" rel="noopener noreferrer"><i
                                 class="bx bx-link-external"></i></a>
                     </div>
@@ -368,6 +371,17 @@
                         <p>API RESTful pour la gestion des boutiques, des produits personnalisés et des commandes avec
                             Django Rest Framework.</p>
                         <a href="https://api.eleafrika.com/" target="_blank" rel="noopener noreferrer"><i
+                                class="bx bx-link-external"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-box mix siteweb api">
+                    <div class="portfolio-img">
+                        <img src="img/Kondzimo.png" alt="Portfolio personnel">
+                    </div>
+                    <div class="port-content">
+                        <h3>Kondzimo</h3>
+                        <p>Système intelligent d'orientation des patients vers l'établissement de santé le plus adapté à leurs besoins avec Next.js & FastAPI</p>
+                        <a href="https://kondzimo-web.onrender.com/" target="_blank" rel="noopener noreferrer"><i
                                 class="bx bx-link-external"></i></a>
                     </div>
                 </div>
@@ -497,37 +511,36 @@
             <img src="img/Amouzou_Koffi Jacques.png" alt="Portrait de Koffi Jacques Amouzou">
             <div class="info1">
                 <span>4+</span>
-                <p>Années d'expérience</p>
+                <p data-i18n="about.exp">Années d'expérience</p>
             </div>
             <div class="info2">
                 <span>10+</span>
-                <p>Projets réalisés</p>
+                <p data-i18n="about.projects">Projets réalisés</p>
             </div>
             <div class="info3">
                 <span>5+</span>
-                <p>Spécialités principales</p>
+                <p data-i18n="about.specialties">Spécialités principales</p>
             </div>
         </div>
 
         <div class="about-content scroll-scale">
-            <span>À propos</span>
-            <h2>A propos de moi</h2>
-            <h3>Profil professionnel</h3>
-            <p>Je suis développeur Full-Stack spécialisé dans la conception d'applications web robustes et évolutives.
+            <span data-i18n="about.kicker">À propos</span>
+            <h2 data-i18n="about.title">A propos de moi</h2>
+            <h3 data-i18n="about.subtitle">Profil professionnel</h3>
+            <p data-i18n="about.p1">Je suis développeur Full-Stack spécialisé dans la conception d'applications web robustes et évolutives.
                 J'interviens également comme développeur et intégrateur Odoo pour accompagner les entreprises dans la
                 mise en place et la personnalisation de leurs systèmes de gestion.</p>
 
-            <p>Passionné par la technologie et l'innovation, je m'intéresse aussi à la cybersécurité afin de concevoir
+            <p data-i18n="about.p2">Passionné par la technologie et l'innovation, je m'intéresse aussi à la cybersécurité afin de concevoir
                 des solutions non seulement performantes, mais aussi sécurisées. En parallèle, je développe mes
                 compétences en data engineering pour mieux exploiter les données et créer des systèmes intelligents et
                 efficaces.</p>
 
 
-            <p>Mon objectif est clair : concevoir des solutions numériques qui apportent une réelle valeur aux
+            <p data-i18n="about.p3">Mon objectif est clair : concevoir des solutions numériques qui apportent une réelle valeur aux
                 entreprises. N'hésitez pas à me contacter pour discuter de votre projet.</p>
             <div class="btn-box about-btn">
-                <a href="https://www.linkedin.com/in/koffi-jacques-amouzou-662595234/" class="btn" target="_blank">Voir
-                    plus !</a>
+                <a href="https://www.linkedin.com/in/koffi-jacques-amouzou-662595234/" class="btn" target="_blank" data-i18n="about.more">Voir plus !</a>
             </div>
         </div>
     </section>
@@ -535,30 +548,30 @@
     <!-- contact -->
     <section class="contact scroll-top" id="contact">
         <div class="main-text scroll-scale">
-            <span>Une idée, un projet ?</span>
-            <h2>Contactez-moi</h2>
+            <span data-i18n="contact.kicker">Une idée, un projet ?</span>
+            <h2 data-i18n="contact.title">Contactez-moi</h2>
         </div>
 
         <form class="scroll-top" id="contact-form" onsubmit="sendMail(event)">
             <div class="input-box">
                 <input type="text" id="name" placeholder="" required="required">
-                <span>Votre Nom</span>
+                <span data-i18n="contact.name">Votre Nom</span>
             </div>
             <div class="input-box">
                 <input type="email" id="email" placeholder="" required="required">
-                <span>Votre Email</span>
+                <span data-i18n="contact.email">Votre Email</span>
             </div>
             <div class="input-box">
                 <input type="text" id="number" placeholder="" required="required">
-                <span>Numéro de Telephone</span>
+                <span data-i18n="contact.phone">Numéro de Telephone</span>
             </div>
             <div class="input-box">
                 <input type="text" id="subject" placeholder="" required="required">
-                <span>Votre sujet</span>
+                <span data-i18n="contact.subject">Votre sujet</span>
             </div>
-            <textarea id="message" cols="30" rows="10" placeholder="Votre message" required="required"></textarea>
+            <textarea id="message" cols="30" rows="10" placeholder="Votre message" required="required" data-i18n-placeholder="contact.messagePlaceholder"></textarea>
             <div class="btn-box formBtn">
-                <button type="submit" class="btn">Envoyer</button>
+                <button type="submit" class="btn" data-i18n="contact.send">Envoyer</button>
             </div>
         </form>
     </section>
