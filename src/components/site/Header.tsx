@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -107,7 +107,7 @@ export function Header({ alias }: { alias: string }) {
 
       <AnimatePresence>
         {open ? (
-          <motion.nav
+          <m.nav
             id="mobile-menu"
             aria-label="Mobile"
             initial={{ opacity: 0, height: 0 }}
@@ -117,7 +117,7 @@ export function Header({ alias }: { alias: string }) {
           >
             <ul className="flex flex-col gap-1 px-4 pt-6">
               {links.map((link, i) => (
-                <motion.li
+                <m.li
                   key={link.key}
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -131,7 +131,7 @@ export function Header({ alias }: { alias: string }) {
                     <span className="font-mono text-xs text-accent">0{i + 1}</span>
                     {t(link.key)}
                   </Link>
-                </motion.li>
+                </m.li>
               ))}
             </ul>
             <div className="px-4 pt-8">
@@ -139,7 +139,7 @@ export function Header({ alias }: { alias: string }) {
                 {tc("startProject")}
               </Link>
             </div>
-          </motion.nav>
+          </m.nav>
         ) : null}
       </AnimatePresence>
     </header>

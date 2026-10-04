@@ -3,7 +3,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ChatWidget } from "@/components/chat/ChatWidget";
-import { Cursor } from "@/components/site/Cursor";
+import { LazyCursor } from "@/components/site/LazyCursor";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -64,6 +64,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <head>
         <ThemeScript />
         <JsonLd settings={settings} locale={locale} />
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className="grain min-h-dvh overflow-x-hidden">
         <NextIntlClientProvider>
@@ -74,7 +77,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             </main>
             <Footer settings={settings} />
             {settings.chatbotEnabled ? <ChatWidget /> : null}
-            <Cursor />
+            <LazyCursor />
           </Providers>
         </NextIntlClientProvider>
       </body>

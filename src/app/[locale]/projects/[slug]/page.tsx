@@ -94,8 +94,8 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
         </header>
 
         {project.coverImage ? (
-          <Reveal className="card relative mt-12 aspect-[16/9] overflow-hidden">
-            <Image src={project.coverImage} alt={title} fill priority sizes="(min-width: 1280px) 1216px, 100vw" className="object-cover object-top" />
+          <Reveal eager className="card relative mt-12 aspect-[16/9] overflow-hidden">
+            <Image src={project.coverImage} alt={title} fill preload fetchPriority="high" sizes="(min-width: 1280px) 1216px, 100vw" className="object-cover object-top" />
           </Reveal>
         ) : null}
 

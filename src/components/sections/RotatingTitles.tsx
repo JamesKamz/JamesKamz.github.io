@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function RotatingTitles({ titles }: { titles: string[] }) {
@@ -20,7 +20,7 @@ export function RotatingTitles({ titles }: { titles: string[] }) {
         {titles.reduce((a, b) => (b.length > a.length ? b : a), "")}
       </span>
       <AnimatePresence mode="wait" initial={false}>
-        <motion.span
+        <m.span
           key={titles[index]}
           className="col-start-1 row-start-1 font-serif italic text-accent"
           initial={{ y: "60%", opacity: 0, filter: "blur(6px)" }}
@@ -29,7 +29,7 @@ export function RotatingTitles({ titles }: { titles: string[] }) {
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           {titles[index]}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </span>
   );

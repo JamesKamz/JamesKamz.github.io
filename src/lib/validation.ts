@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { estimateInputSchema } from "./budget";
+import { estimateInputSchema } from "./budget"; // also applies z.config({ jitless: true })
 
 /**
  * Shared Zod schemas (client forms + server routes).

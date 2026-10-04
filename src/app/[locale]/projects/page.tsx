@@ -22,7 +22,7 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
     <>
       <div className="mx-auto max-w-7xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
         <SectionHeading as="h1" kicker={t("kicker")} title={t("title")} subtitle={t("subtitle")} className="mb-12" />
-        <ProjectsGrid projects={projects} locale={locale} />
+        <ProjectsGrid projects={projects} locale={locale} eager headingLevel={2} />
       </div>
       <CtaBand />
     </>

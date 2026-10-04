@@ -1,20 +1,52 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { useEffect, useRef, type CSSProperties, type HTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
-type Props = HTMLMotionProps<"div"> & { delay?: number; y?: number };
+type Props = HTMLAttributes<HTMLDivElement> & { delay?: number; eager?: boolean };
 
-/** Fades/slides children in when they enter the viewport. Honours prefers-reduced-motion via MotionConfig. */
-export function Reveal({ delay = 0, y = 24, children, ...rest }: Props) {
+let observer: IntersectionObserver | null = null;
+function getObserver() {
+  if (!observer) {
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer?.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -60px 0px" },
+    );
+  }
+  return observer;
+}
+
+/**
+ * Reveals children when they scroll into view, with one shared IntersectionObserver
+ * and CSS transitions (see `.reveal` in globals.css; disabled for reduced motion and
+ * without JavaScript). `eager` renders above-the-fold content visible immediately
+ * so it never delays Largest Contentful Paint.
+ */
+export function Reveal({ delay = 0, eager = false, className, style, children, ...rest }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || eager) return;
+    const io = getObserver();
+    io.observe(el);
+    return () => io.unobserve(el);
+  }, [eager]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      ref={ref}
+      className={cn(!eager && "reveal", className)}
+      style={delay ? ({ ...style, "--reveal-delay": `${delay}s` } as CSSProperties) : style}
       {...rest}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

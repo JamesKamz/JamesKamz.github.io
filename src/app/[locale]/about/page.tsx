@@ -66,7 +66,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
           </div>
           <div className="lg:col-span-5">
             {settings.photoUrl ? (
-              <Reveal className="card relative mx-auto aspect-[4/5] max-w-sm overflow-hidden lg:-rotate-2">
+              <Reveal eager className="card relative mx-auto aspect-[4/5] max-w-sm overflow-hidden lg:-rotate-2">
                 <Image src={settings.photoUrl} alt={settings.fullName} fill sizes="(min-width: 1024px) 24rem, 80vw" className="object-cover" />
               </Reveal>
             ) : null}

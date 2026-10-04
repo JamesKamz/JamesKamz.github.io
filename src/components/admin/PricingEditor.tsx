@@ -4,7 +4,7 @@ import { Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useActionState, useMemo, useState } from "react";
 import { buttonClass } from "@/components/ui/Button";
 import type { FormState } from "@/lib/admin/actions";
-import { computeEstimate, formatMoney, type PricingConfig } from "@/lib/budget";
+import { computeEstimate, formatMoney, type PricingConfig } from "@/lib/pricing";
 
 type ListKey = "projectTypes" | "features" | "timelines" | "designLevels";
 const lists: { key: ListKey; title: string; valueKey: "base" | "cost" | "multiplier"; valueLabel: string; step: string }[] = [

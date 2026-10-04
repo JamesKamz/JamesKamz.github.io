@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { m, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 
 /** Custom cursor: a dot + a lagging ring that grows over interactive elements. Fine pointers only. */
@@ -41,11 +41,11 @@ export function Cursor() {
   if (!enabled) return null;
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[70]" style={{ opacity: visible ? 1 : 0 }}>
-      <motion.div
+      <m.div
         className="absolute -left-1 -top-1 size-2 rounded-full bg-accent"
         style={{ x, y }}
       />
-      <motion.div
+      <m.div
         className="absolute rounded-full border border-accent/70 mix-blend-difference"
         style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         animate={{ width: hovering ? 56 : 32, height: hovering ? 56 : 32, opacity: hovering ? 1 : 0.6 }}

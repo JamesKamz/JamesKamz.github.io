@@ -18,7 +18,7 @@ export function LocaleSwitch({ label }: { label: string }) {
       type="button"
       disabled={pending}
       lang={next}
-      aria-label={label}
+      title={label}
       onClick={() =>
         startTransition(() => {
           // pathname + params always match a configured route here
@@ -27,6 +27,7 @@ export function LocaleSwitch({ label }: { label: string }) {
       }
       className="h-10 rounded-full border border-line px-3 font-mono text-xs uppercase tracking-wider text-fg-soft transition hover:border-accent hover:text-accent disabled:opacity-50"
     >
+      <span className="sr-only">{label}: </span>
       <span className="text-accent">{locale}</span>
       <span className="mx-1 text-muted">/</span>
       {next}

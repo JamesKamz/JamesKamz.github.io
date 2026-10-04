@@ -38,7 +38,7 @@ export async function Youtube({
                 {t("subscribersLabel")}
               </p>
             ) : null}
-            <a href={subscribeUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("primary", "bg-[#ff0033] text-white")}>
+            <a href={subscribeUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("primary", "bg-[#c4001f] text-white")}>
               <BrandIcon brand="youtube" className="size-4" />
               {t("subscribe")}
             </a>

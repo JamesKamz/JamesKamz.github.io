@@ -94,7 +94,8 @@ export async function Hero({ settings, stats, locale }: { settings: SettingsView
                   src={settings.photoUrl}
                   alt={settings.fullName}
                   fill
-                  priority
+                  preload
+                  fetchPriority="high"
                   sizes="(min-width: 1024px) 28rem, 90vw"
                   className="object-cover"
                 />

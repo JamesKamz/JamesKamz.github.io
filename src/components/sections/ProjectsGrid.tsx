@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ProjectCategory } from "@/generated/prisma/enums";
@@ -12,7 +12,18 @@ import { ProjectCard } from "./ProjectCard";
 const filters = ["ALL", ...Object.values(ProjectCategory)] as const;
 type Filter = (typeof filters)[number];
 
-export function ProjectsGrid({ projects, locale }: { projects: ProjectView[]; locale: string }) {
+export function ProjectsGrid({
+  projects,
+  locale,
+  eager = false,
+  headingLevel = 3,
+}: {
+  projects: ProjectView[];
+  locale: string;
+  /** Load the first images eagerly (grid above the fold). */
+  eager?: boolean;
+  headingLevel?: 2 | 3;
+}) {
   const t = useTranslations("projects");
   const tc = useTranslations("common");
   const [filter, setFilter] = useState<Filter>("ALL");
@@ -43,22 +54,21 @@ export function ProjectsGrid({ projects, locale }: { projects: ProjectView[]; lo
       </div>
 
       {visible.length ? (
-        <motion.ul layout className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
+        <m.ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence initial={false}>
             {visible.map((project, i) => (
-              <motion.li
+              <m.li
                 key={project.id}
-                layout
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.3 }}
               >
-                <ProjectCard project={project} locale={locale} priority={i < 3} />
-              </motion.li>
+                <ProjectCard project={project} locale={locale} eager={eager && i < 3} headingLevel={headingLevel} />
+              </m.li>
             ))}
           </AnimatePresence>
-        </motion.ul>
+        </m.ul>
       ) : (
         <div className="card mt-10 flex flex-col items-start gap-4 p-8">
           <p className="font-mono text-sm text-muted">
