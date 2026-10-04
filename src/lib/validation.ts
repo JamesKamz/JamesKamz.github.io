@@ -5,7 +5,7 @@ import { estimateInputSchema } from "./budget";
  * Shared Zod schemas (client forms + server routes).
  * Error messages are translation keys under `validation.*`.
  */
-const phoneRegex = /^[+\d][\d\s().-]{5,24}$/;
+const phoneRegex = /^[+\d(][\d\s().-]{5,24}$/;
 
 export const localeSchema = z.enum(["fr", "en"]).default("fr");
 
