@@ -1,0 +1,277 @@
+// Prisma schema — James Kamz portfolio
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  githubLogin  String?  @unique
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Singleton row (id = "main") holding identity, links and chatbot settings.
+model SiteSettings {
+  id                   String   @id @default("main")
+  fullName             String
+  alias                String
+  titlesFr             String[]
+  titlesEn             String[]
+  taglineFr            String
+  taglineEn            String
+  aboutFr              String
+  aboutEn              String
+  locationFr           String
+  locationEn           String
+  available            Boolean  @default(true)
+  availabilityFr       String
+  availabilityEn       String
+  email                String
+  phone                String?
+  whatsapp             String?
+  linkedin             String?
+  github               String?
+  youtube              String?
+  youtubeHandle        String?
+  facebook             String?
+  instagram            String?
+  comeup               String?
+  upwork               String?
+  comeupSince          Int?
+  photoUrl             String?
+  cvFrUrl              String?
+  cvEnUrl              String?
+  chatbotEnabled       Boolean  @default(true)
+  chatbotInstructionsFr String
+  chatbotInstructionsEn String
+  /// Budget estimator pricing (see src/lib/budget.ts → PricingConfig)
+  pricing              Json
+  updatedAt            DateTime @updatedAt
+}
+
+model Stat {
+  id       String  @id @default(cuid())
+  key      String  @unique
+  labelFr  String
+  labelEn  String
+  value    Float
+  prefix   String  @default("")
+  suffix   String  @default("")
+  decimals Int     @default(0)
+  visible  Boolean @default(true)
+  order    Int     @default(0)
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  icon      String
+  titleFr   String
+  titleEn   String
+  descFr    String
+  descEn    String
+  tags      String[]
+  /// Bento cell size: "lg" | "md" | "sm"
+  size      String   @default("md")
+  published Boolean  @default(true)
+  order     Int      @default(0)
+}
+
+enum ProjectCategory {
+  SAAS
+  WEB
+  API
+  ODOO
+  AUTOMATION
+}
+
+model Project {
+  id         String            @id @default(cuid())
+  slug       String            @unique
+  titleFr    String
+  titleEn    String
+  summaryFr  String
+  summaryEn  String
+  problemFr  String
+  problemEn  String
+  solutionFr String
+  solutionEn String
+  resultFr   String
+  resultEn   String
+  categories ProjectCategory[]
+  stack      String[]
+  liveUrl    String?
+  repoUrl    String?
+  coverImage String?
+  gallery    String[]
+  year       Int?
+  featured   Boolean           @default(false)
+  published  Boolean           @default(true)
+  order      Int               @default(0)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+}
+
+enum Platform {
+  COMEUP
+  UPWORK
+  DIRECT
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  authorName String
+  authorRole String?
+  country    String?
+  platform   Platform @default(DIRECT)
+  rating     Int      @default(5)
+  textFr     String
+  textEn     String?
+  sourceUrl  String?
+  isExample  Boolean  @default(false)
+  published  Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model SkillGroup {
+  id     String   @id @default(cuid())
+  slug   String   @unique
+  icon   String
+  nameFr String
+  nameEn String
+  items  String[]
+  order  Int      @default(0)
+}
+
+enum ExperienceKind {
+  WORK
+  EDUCATION
+  AWARD
+}
+
+model Experience {
+  id        String         @id @default(cuid())
+  kind      ExperienceKind @default(WORK)
+  roleFr    String
+  roleEn    String
+  company   String
+  descFr    String
+  descEn    String
+  startDate DateTime
+  endDate   DateTime?
+  order     Int            @default(0)
+}
+
+model FaqEntry {
+  id         String  @id @default(cuid())
+  questionFr String
+  questionEn String
+  answerFr   String
+  answerEn   String
+  published  Boolean @default(true)
+  order      Int     @default(0)
+}
+
+enum LeadStatus {
+  NEW
+  DISCUSSION
+  QUOTE_SENT
+  IN_PROGRESS
+  DELIVERED
+  LOST
+}
+
+enum LeadSource {
+  BUDGET
+  CONTACT
+  CHAT
+  MANUAL
+}
+
+/// A prospect or client project. Amounts are stored in EUR (whole units).
+model Lead {
+  id              String     @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  company         String?
+  title           String?
+  message         String?
+  source          LeadSource @default(BUDGET)
+  locale          String     @default("fr")
+  projectType     String?
+  features        String[]
+  timeline        String?
+  design          String?
+  estimateMin     Int?
+  estimateMax     Int?
+  budgetValidated Int?
+  amountPaid      Int        @default(0)
+  status          LeadStatus @default(NEW)
+  notes           String?
+  startDate       DateTime?
+  dueDate         DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  budget    String?
+  locale    String   @default("fr")
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([handled])
+}
+
+model ChatConversation {
+  id        String        @id @default(cuid())
+  locale    String        @default("fr")
+  ipHash    String?
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model ChatMessage {
+  id             String           @id @default(cuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String
+  content        String
+  createdAt      DateTime         @default(now())
+
+  @@index([conversationId])
+}
+
+/// Fixed-window rate limiting shared across serverless instances.
+model RateLimit {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime
+}
