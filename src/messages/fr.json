@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "title": "James Kamz — SaaS Builder, Full-Stack Engineer & Odoo Developer",
+    "description": "Koffi Jacques Amouzou (James Kamz) : 5+ ans d'expérience. Je crée des SaaS rentables, j'intègre et personnalise Odoo et j'automatise vos processus métiers. Basé au Maroc, disponible en remote.",
+    "keywords": "James Kamz, Koffi Jacques Amouzou, SaaS builder, développeur full-stack, développeur Odoo, intégrateur Odoo, automatisation n8n, Make, Zapier, Next.js, Django, FastAPI, freelance Maroc"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "projects": "Projets",
+    "about": "À propos",
+    "budget": "Budget",
+    "contact": "Contact",
+    "skip": "Aller au contenu",
+    "menu": "Menu",
+    "close": "Fermer",
+    "theme": "Changer de thème",
+    "language": "Langue",
+    "switchTo": "English"
+  },
+  "common": {
+    "startProject": "Démarrer un projet",
+    "estimateBudget": "Estimer mon budget",
+    "downloadCv": "Télécharger mon CV",
+    "viewProject": "Voir l'étude de cas",
+    "viewAll": "Tout voir",
+    "visitSite": "Voir le site",
+    "sourceCode": "Code source",
+    "back": "Retour",
+    "available": "Disponible",
+    "unavailable": "Indisponible pour le moment",
+    "present": "Aujourd'hui",
+    "since": "depuis"
+  },
+  "hero": {
+    "greeting": "Salut, je suis",
+    "iam": "je suis",
+    "location": "Localisation",
+    "status": "Statut",
+    "trustComeup": "Vendeur ComeUp depuis {year}",
+    "trustUpwork": "Freelance Upwork",
+    "trustYears": "{years}+ ans d'expérience",
+    "scroll": "défiler"
+  },
+  "stats": {
+    "kicker": "chiffres",
+    "title": "En quelques chiffres"
+  },
+  "services": {
+    "kicker": "services",
+    "title": "Ce que je construis pour vous",
+    "subtitle": "Des produits qui rapportent, des outils qui font gagner du temps.",
+    "cta": "Discutons de votre besoin"
+  },
+  "projects": {
+    "kicker": "projets",
+    "title": "Études de cas",
+    "subtitle": "Une sélection de produits livrés, du SaaS à l'API.",
+    "filters": {
+      "ALL": "Tous",
+      "SAAS": "SaaS",
+      "WEB": "Web",
+      "API": "API",
+      "ODOO": "Odoo",
+      "AUTOMATION": "Automatisation"
+    },
+    "empty": "Les études de cas de cette catégorie arrivent bientôt. Parlons de votre projet en attendant !",
+    "problem": "Le problème",
+    "solution": "La solution",
+    "result": "Le résultat",
+    "stack": "Stack",
+    "links": "Liens",
+    "gallery": "Galerie",
+    "year": "Année",
+    "categories": "Catégories",
+    "next": "Projet suivant",
+    "similar": "Un projet similaire ?"
+  },
+  "testimonials": {
+    "kicker": "avis",
+    "title": "Ils m'ont fait confiance",
+    "empty": "Les avis clients seront bientôt affichés ici. Retrouvez-les en attendant sur mes profils :",
+    "viewSource": "Voir l'avis",
+    "badgeComeup": "Vendeur ComeUp depuis {year}",
+    "badgeUpwork": "Freelance Upwork",
+    "platform": {
+      "COMEUP": "ComeUp",
+      "UPWORK": "Upwork",
+      "DIRECT": "Client direct"
+    },
+    "rating": "Note : {rating} sur 5"
+  },
+  "youtube": {
+    "kicker": "youtube",
+    "title": "Je partage aussi en vidéo",
+    "subtitle": "Tutoriels, retours d'expérience et coulisses du freelancing tech sur ma chaîne.",
+    "subscribe": "S'abonner",
+    "subscribers": "{count} abonnés",
+    "fallback": "Découvrez mes dernières vidéos directement sur YouTube.",
+    "watch": "Regarder",
+    "subscribersLabel": "abonnés"
+  },
+  "skills": {
+    "kicker": "stack",
+    "title": "Compétences",
+    "subtitle": "Les outils avec lesquels je livre, groupés par domaine."
+  },
+  "cta": {
+    "title": "Une idée de SaaS, un Odoo à dompter, un process à automatiser ?",
+    "subtitle": "Obtenez une fourchette de budget en 2 minutes, puis parlons-en.",
+    "primary": "Estimer mon budget",
+    "secondary": "Me contacter"
+  },
+  "about": {
+    "kicker": "à-propos",
+    "title": "À propos",
+    "values": "Mes valeurs",
+    "value1Title": "Impact business",
+    "value1": "Chaque ligne de code doit servir un objectif mesurable : revenus, temps gagné, clients satisfaits.",
+    "value2Title": "Qualité & sécurité",
+    "value2": "Code testé, revu et sécurisé dès la conception. Pas de dette cachée.",
+    "value3Title": "Transparence",
+    "value3": "Communication claire, démos régulières, budget et délais tenus.",
+    "timeline": "Parcours",
+    "cvFr": "CV (FR)",
+    "cvEn": "CV (EN)",
+    "faq": "Questions fréquentes",
+    "kind": {
+      "WORK": "Expérience",
+      "EDUCATION": "Formation",
+      "AWARD": "Distinction"
+    }
+  },
+  "contact": {
+    "kicker": "contact",
+    "title": "Parlons de votre projet",
+    "subtitle": "Réponse sous 24 à 48 h ouvrées. Vous pouvez aussi m'écrire directement.",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone (optionnel)",
+    "subject": "Sujet",
+    "message": "Message",
+    "budget": "Budget estimé (optionnel)",
+    "budgetPlaceholder": "ex. 2 000 – 3 000 €",
+    "send": "Envoyer le message",
+    "sending": "Envoi…",
+    "success": "Merci ! Votre message est bien parti. Je vous réponds très vite.",
+    "error": "Oups, l'envoi a échoué. Réessayez ou écrivez-moi par email.",
+    "rateLimited": "Trop de tentatives. Réessayez dans quelques minutes.",
+    "whatsapp": "Écrire sur WhatsApp",
+    "orEmail": "ou par email",
+    "privacy": "Vos données servent uniquement à vous répondre."
+  },
+  "budget": {
+    "kicker": "estimateur",
+    "title": "Estimez votre budget",
+    "subtitle": "4 questions, une fourchette indicative en MAD, EUR et USD. Sans engagement.",
+    "step": "Étape {current} sur {total}",
+    "steps": {
+      "type": "Type de projet",
+      "features": "Fonctionnalités",
+      "timeline": "Délai",
+      "design": "Design",
+      "result": "Estimation"
+    },
+    "typeQuestion": "Quel type de projet ?",
+    "featuresQuestion": "Quelles fonctionnalités ?",
+    "featuresHint": "Sélectionnez tout ce qui s'applique (optionnel).",
+    "timelineQuestion": "Quel délai ?",
+    "designQuestion": "Quel niveau de design ?",
+    "next": "Continuer",
+    "previous": "Précédent",
+    "seeEstimate": "Voir l'estimation",
+    "estimate": "Fourchette estimée",
+    "disclaimer": "Estimation indicative, non contractuelle. Le prix final est fixé dans un devis après un échange sur votre besoin.",
+    "sendTitle": "Recevoir un devis précis",
+    "sendSubtitle": "Laissez vos coordonnées : je reviens vers vous avec un devis détaillé.",
+    "company": "Entreprise (optionnel)",
+    "details": "Décrivez votre projet en quelques lignes (optionnel)",
+    "send": "Envoyer ma demande",
+    "success": "Demande envoyée ! Je vous recontacte sous 48 h avec une proposition.",
+    "restart": "Recommencer",
+    "required": "Choisissez une option pour continuer."
+  },
+  "chat": {
+    "open": "Ouvrir l'assistant",
+    "close": "Fermer l'assistant",
+    "title": "Assistant James Kamz",
+    "subtitle": "IA · répond sur mes services",
+    "welcome": "Bonjour 👋 Je suis l'assistant de James. Posez-moi vos questions sur ses services, ses projets ou votre budget.",
+    "placeholder": "Votre question…",
+    "send": "Envoyer",
+    "error": "Désolé, je ne peux pas répondre pour le moment. Écrivez à James via la page contact.",
+    "rateLimited": "Vous avez envoyé beaucoup de messages. Réessayez un peu plus tard.",
+    "tooLong": "Message trop long (500 caractères max).",
+    "disclaimer": "Réponses générées par IA, à titre indicatif.",
+    "suggestions": [
+      "Quels services proposes-tu ?",
+      "Combien coûte un SaaS ?",
+      "Tu travailles avec Odoo ?"
+    ]
+  },
+  "footer": {
+    "tagline": "SaaS · Full-Stack · Odoo · Automatisation",
+    "rights": "Tous droits réservés.",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "built": "Conçu et développé par James Kamz avec Next.js."
+  },
+  "notFound": {
+    "title": "404 — page introuvable",
+    "text": "La commande n'a rien retourné. Cette page n'existe pas (ou plus).",
+    "home": "Retour à l'accueil"
+  },
+  "validation": {
+    "name": "Indiquez votre nom (2 caractères minimum).",
+    "email": "Adresse email invalide.",
+    "phone": "Numéro invalide.",
+    "subject": "Indiquez un sujet (3 caractères minimum).",
+    "message": "Votre message doit contenir au moins 10 caractères.",
+    "tooLong": "Texte trop long."
+  }
+}

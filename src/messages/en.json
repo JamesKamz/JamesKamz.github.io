@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "title": "James Kamz — SaaS Builder, Full-Stack Engineer & Odoo Developer",
+    "description": "Koffi Jacques Amouzou (James Kamz): 5+ years of experience. I build profitable SaaS products, integrate and tailor Odoo, and automate business processes. Based in Morocco, available remotely worldwide.",
+    "keywords": "James Kamz, Koffi Jacques Amouzou, SaaS builder, full-stack engineer, Odoo developer, Odoo integrator, automation expert, n8n, Make, Zapier, Next.js, Django, FastAPI, freelance Morocco"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About",
+    "budget": "Budget",
+    "contact": "Contact",
+    "skip": "Skip to content",
+    "menu": "Menu",
+    "close": "Close",
+    "theme": "Toggle theme",
+    "language": "Language",
+    "switchTo": "Français"
+  },
+  "common": {
+    "startProject": "Start a project",
+    "estimateBudget": "Estimate my budget",
+    "downloadCv": "Download my CV",
+    "viewProject": "Read the case study",
+    "viewAll": "View all",
+    "visitSite": "Visit site",
+    "sourceCode": "Source code",
+    "back": "Back",
+    "available": "Available",
+    "unavailable": "Currently unavailable",
+    "present": "Present",
+    "since": "since"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "iam": "I'm a",
+    "location": "Location",
+    "status": "Status",
+    "trustComeup": "ComeUp seller since {year}",
+    "trustUpwork": "Upwork freelancer",
+    "trustYears": "{years}+ years of experience",
+    "scroll": "scroll"
+  },
+  "stats": {
+    "kicker": "numbers",
+    "title": "At a glance"
+  },
+  "services": {
+    "kicker": "services",
+    "title": "What I build for you",
+    "subtitle": "Products that make money, tools that save time.",
+    "cta": "Let's talk about your needs"
+  },
+  "projects": {
+    "kicker": "projects",
+    "title": "Case studies",
+    "subtitle": "A selection of shipped products, from SaaS to APIs.",
+    "filters": {
+      "ALL": "All",
+      "SAAS": "SaaS",
+      "WEB": "Web",
+      "API": "API",
+      "ODOO": "Odoo",
+      "AUTOMATION": "Automation"
+    },
+    "empty": "Case studies in this category are coming soon. Let's talk about your project in the meantime!",
+    "problem": "The problem",
+    "solution": "The solution",
+    "result": "The result",
+    "stack": "Stack",
+    "links": "Links",
+    "gallery": "Gallery",
+    "year": "Year",
+    "categories": "Categories",
+    "next": "Next project",
+    "similar": "Got a similar project?"
+  },
+  "testimonials": {
+    "kicker": "reviews",
+    "title": "Clients who trusted me",
+    "empty": "Client reviews will be displayed here soon. Meanwhile, find them on my profiles:",
+    "viewSource": "View review",
+    "badgeComeup": "ComeUp seller since {year}",
+    "badgeUpwork": "Upwork freelancer",
+    "platform": {
+      "COMEUP": "ComeUp",
+      "UPWORK": "Upwork",
+      "DIRECT": "Direct client"
+    },
+    "rating": "Rating: {rating} out of 5"
+  },
+  "youtube": {
+    "kicker": "youtube",
+    "title": "I also share on video",
+    "subtitle": "Tutorials, lessons learned and behind the scenes of tech freelancing on my channel.",
+    "subscribe": "Subscribe",
+    "subscribers": "{count} subscribers",
+    "fallback": "Watch my latest videos directly on YouTube.",
+    "watch": "Watch",
+    "subscribersLabel": "subscribers"
+  },
+  "skills": {
+    "kicker": "stack",
+    "title": "Skills",
+    "subtitle": "The tools I ship with, grouped by domain."
+  },
+  "cta": {
+    "title": "A SaaS idea, an Odoo to tame, a process to automate?",
+    "subtitle": "Get a budget range in 2 minutes, then let's talk.",
+    "primary": "Estimate my budget",
+    "secondary": "Contact me"
+  },
+  "about": {
+    "kicker": "about",
+    "title": "About",
+    "values": "My values",
+    "value1Title": "Business impact",
+    "value1": "Every line of code must serve a measurable goal: revenue, time saved, happy customers.",
+    "value2Title": "Quality & security",
+    "value2": "Tested, reviewed code, secure by design. No hidden debt.",
+    "value3Title": "Transparency",
+    "value3": "Clear communication, regular demos, budget and deadlines kept.",
+    "timeline": "Journey",
+    "cvFr": "CV (FR)",
+    "cvEn": "CV (EN)",
+    "faq": "FAQ",
+    "kind": {
+      "WORK": "Experience",
+      "EDUCATION": "Education",
+      "AWARD": "Award"
+    }
+  },
+  "contact": {
+    "kicker": "contact",
+    "title": "Let's talk about your project",
+    "subtitle": "Reply within 24–48 business hours. You can also email me directly.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "budget": "Estimated budget (optional)",
+    "budgetPlaceholder": "e.g. €2,000 – €3,000",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thanks! Your message is on its way. I'll get back to you shortly.",
+    "error": "Oops, sending failed. Please retry or email me.",
+    "rateLimited": "Too many attempts. Please try again in a few minutes.",
+    "whatsapp": "Message me on WhatsApp",
+    "orEmail": "or by email",
+    "privacy": "Your data is only used to reply to you."
+  },
+  "budget": {
+    "kicker": "estimator",
+    "title": "Estimate your budget",
+    "subtitle": "4 questions, an indicative range in MAD, EUR and USD. No commitment.",
+    "step": "Step {current} of {total}",
+    "steps": {
+      "type": "Project type",
+      "features": "Features",
+      "timeline": "Timeline",
+      "design": "Design",
+      "result": "Estimate"
+    },
+    "typeQuestion": "What kind of project?",
+    "featuresQuestion": "Which features?",
+    "featuresHint": "Select everything that applies (optional).",
+    "timelineQuestion": "What timeline?",
+    "designQuestion": "What level of design?",
+    "next": "Continue",
+    "previous": "Back",
+    "seeEstimate": "See estimate",
+    "estimate": "Estimated range",
+    "disclaimer": "Indicative, non-binding estimate. The final price is set in a quote after we discuss your needs.",
+    "sendTitle": "Get a precise quote",
+    "sendSubtitle": "Leave your details: I'll come back with a detailed quote.",
+    "company": "Company (optional)",
+    "details": "Describe your project in a few lines (optional)",
+    "send": "Send my request",
+    "success": "Request sent! I'll get back to you within 48 hours with a proposal.",
+    "restart": "Start over",
+    "required": "Pick an option to continue."
+  },
+  "chat": {
+    "open": "Open assistant",
+    "close": "Close assistant",
+    "title": "James Kamz assistant",
+    "subtitle": "AI · answers about my services",
+    "welcome": "Hi 👋 I'm James's assistant. Ask me about his services, projects or your budget.",
+    "placeholder": "Your question…",
+    "send": "Send",
+    "error": "Sorry, I can't answer right now. Please reach James through the contact page.",
+    "rateLimited": "You've sent a lot of messages. Please try again a bit later.",
+    "tooLong": "Message too long (500 characters max).",
+    "disclaimer": "AI-generated answers, for guidance only.",
+    "suggestions": [
+      "What services do you offer?",
+      "How much does a SaaS cost?",
+      "Do you work with Odoo?"
+    ]
+  },
+  "footer": {
+    "tagline": "SaaS · Full-Stack · Odoo · Automation",
+    "rights": "All rights reserved.",
+    "legal": "Legal notice",
+    "privacy": "Privacy",
+    "built": "Designed and built by James Kamz with Next.js."
+  },
+  "notFound": {
+    "title": "404 — page not found",
+    "text": "The command returned nothing. This page doesn't exist (anymore).",
+    "home": "Back to home"
+  },
+  "validation": {
+    "name": "Please enter your name (at least 2 characters).",
+    "email": "Invalid email address.",
+    "phone": "Invalid phone number.",
+    "subject": "Please enter a subject (at least 3 characters).",
+    "message": "Your message must be at least 10 characters.",
+    "tooLong": "Text too long."
+  }
+}
