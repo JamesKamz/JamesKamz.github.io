@@ -1,14 +1,19 @@
 "use client";
 
 import { Loader2, LogIn } from "lucide-react";
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 import { buttonClass } from "@/components/ui/Button";
 import { loginAction } from "./actions";
 
 export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const [state, action, pending] = useActionState(loginAction, {});
   return (
-    <form action={action} className="space-y-4">
+    <form onSubmit={(e) => {
+        // Submitting via a transition (not the `action` prop) keeps user input on validation errors.
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startTransition(() => action(fd));
+      }} className="space-y-4">
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div>
         <label htmlFor="email" className="label">Email</label>

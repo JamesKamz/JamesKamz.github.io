@@ -17,6 +17,8 @@ export async function rateLimit(key: string, limit: number, windowMs: number): P
     try {
       const row = await db.rateLimit.findUnique({ where: { key } });
       if (!row || row.resetAt.getTime() <= now) {
+        // Opportunistic cleanup of expired windows (~1% of new windows).
+        if (Math.random() < 0.01) void db.rateLimit.deleteMany({ where: { resetAt: { lt: new Date(now) } } }).catch(() => {});
         const resetAt = new Date(now + windowMs);
         await db.rateLimit.upsert({
           where: { key },

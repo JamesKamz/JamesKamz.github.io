@@ -14,7 +14,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://i.ytimg.com https://yt3.ggpht.com https://*.public.blob.vercel-storage.com",
   "font-src 'self' data:",
-  "connect-src 'self'",
+  `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
   "frame-src https://www.youtube-nocookie.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",

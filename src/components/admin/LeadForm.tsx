@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Save } from "lucide-react";
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 import { buttonClass } from "@/components/ui/Button";
 import type { FormState } from "@/lib/admin/actions";
 import { STATUS_LABELS, STATUSES } from "@/lib/admin/leads";
@@ -37,7 +37,12 @@ export function LeadForm({ action, lead }: { action: (p: FormState, fd: FormData
   );
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form onSubmit={(e) => {
+        // Submitting via a transition (not the `action` prop) keeps user input on validation errors.
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startTransition(() => formAction(fd));
+      }} className="space-y-8">
       <section className="card grid gap-5 p-6 md:grid-cols-2">
         <h2 className="font-medium md:col-span-2">Client</h2>
         {input("name", "Nom", { required: true })}

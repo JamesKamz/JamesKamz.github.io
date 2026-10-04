@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Save } from "lucide-react";
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 import { buttonClass } from "@/components/ui/Button";
 import type { FormState } from "@/lib/admin/actions";
 import type { Field } from "@/lib/admin/resources";
@@ -22,7 +22,12 @@ export function ResourceForm({
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={(e) => {
+        // Submitting via a transition (not the `action` prop) keeps user input on validation errors.
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startTransition(() => formAction(fd));
+      }} className="space-y-6">
       <div className="grid gap-5 md:grid-cols-2">
         {fields.map((field) => (
           <AdminField key={field.name} field={field} value={values[field.name]} error={state.errors?.[field.name]} />
