@@ -30,9 +30,11 @@ test.describe("Budget estimator", () => {
     // One quote currency picked from the visitor's location, switchable between USD / MAD / FCFA; never EUR.
     await expect(estimate).not.toContainText("EUR");
     for (const c of ["USD", "MAD", "FCFA"]) await expect(estimate.getByRole("button", { name: c })).toBeVisible();
-    // Default pricing: (4 500 + 500) × 1 × 1 ± 20 %
-    await expect(estimate).toContainText(/4\s000\s€/);
-    await expect(estimate).toContainText(/6\s000\s€/);
+    // Default pricing: (4 500 + 500) € × 1 × 1 ± 20 % = 4 000 – 6 000 €, shown in USD (× 1.08, rounded)
+    await estimate.getByRole("button", { name: "USD" }).click();
+    await expect(estimate.getByRole("button", { name: "USD" })).toHaveAttribute("aria-pressed", "true");
+    await expect(estimate).toContainText(/4\s300/);
+    await expect(estimate).toContainText(/6\s500/);
 
     await page.getByLabel("Nom").fill("Client Test");
     await page.getByLabel("Email").fill("client@example.com");
@@ -54,6 +56,11 @@ test.describe("Budget estimator", () => {
 test("English locale uses localized routes", async ({ page }) => {
   await page.goto("/en/projects");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Case studies");
-  await page.getByRole("button", { name: /^Odoo/ }).click();
-  await expect(page.getByText("coming soon")).toBeVisible();
+  // The filter keeps only the projects of that category (its button shows the count).
+  const odoo = page.getByRole("button", { name: /^Odoo \d+$/ });
+  const count = Number((await odoo.innerText()).match(/\d+/)?.[0]);
+  expect(count).toBeGreaterThan(0);
+  await odoo.click();
+  await expect(odoo).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("main article")).toHaveCount(count);
 });
