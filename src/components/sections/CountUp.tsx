@@ -2,13 +2,14 @@
 
 import { animate, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { intlLocale } from "@/lib/types";
 
 export function CountUp({ value, decimals = 0, locale }: { value: number; decimals?: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduce = useReducedMotion();
   const [display, setDisplay] = useState(0);
-  const fmt = new Intl.NumberFormat(locale === "en" ? "en-US" : "fr-FR", {
+  const fmt = new Intl.NumberFormat(intlLocale(locale), {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });

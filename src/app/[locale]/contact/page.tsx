@@ -6,20 +6,21 @@ import { BrandIcon } from "@/components/icons/BrandIcon";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getSettings } from "@/lib/content";
-import { alternates } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { whatsappUrl } from "@/lib/utils";
+import type { Locale } from "@/lib/types";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/contact">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "contact" });
-  return { title: t("title"), description: t("subtitle"), alternates: alternates("/contact", locale) };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "contact" });
+  return pageMetadata({ title: t("title"), description: t("subtitle"), href: "/contact", locale });
 }
 
 export default async function ContactPage({ params, searchParams }: PageProps<"/[locale]/contact">) {
   const { locale } = await params;
-  setRequestLocale(locale as "fr" | "en");
+  setRequestLocale(locale as Locale);
   const sp = await searchParams;
   const budget = typeof sp.budget === "string" ? sp.budget.slice(0, 100) : undefined;
   const [t, settings] = await Promise.all([getTranslations("contact"), getSettings()]);

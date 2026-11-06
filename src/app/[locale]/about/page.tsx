@@ -4,25 +4,26 @@ import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { Skills } from "@/components/sections/Skills";
+import { JsonLdScript } from "@/components/site/JsonLd";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { buttonClass } from "@/components/ui/Button";
 import { getExperiences, getFaq, getSettings, getSkillGroups } from "@/lib/content";
-import { alternates } from "@/lib/seo";
-import { loc } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
+import { intlLocale, loc, type Locale } from "@/lib/types";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/about">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "about" });
+  const t = await getTranslations({ locale: locale as Locale, namespace: "about" });
   const settings = await getSettings();
-  return { title: t("title"), description: loc(settings, "tagline", locale), alternates: alternates("/about", locale) };
+  return pageMetadata({ title: t("title"), description: loc(settings, "tagline", locale), href: "/about", locale });
 }
 
 export default async function AboutPage({ params }: PageProps<"/[locale]/about">) {
   const { locale } = await params;
-  setRequestLocale(locale as "fr" | "en");
+  setRequestLocale(locale as Locale);
   const [t, tc, settings, experiences, faq, skills] = await Promise.all([
     getTranslations("about"),
     getTranslations("common"),
@@ -31,7 +32,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
     getFaq(),
     getSkillGroups(),
   ]);
-  const fmt = new Intl.DateTimeFormat(locale === "en" ? "en-US" : "fr-FR", { month: "short", year: "numeric" });
+  const fmt = new Intl.DateTimeFormat(intlLocale(locale), { month: "short", year: "numeric" });
   const values = [
     { icon: Target, title: t("value1Title"), body: t("value1") },
     { icon: ShieldCheck, title: t("value2Title"), body: t("value2") },
@@ -48,7 +49,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
               {loc(settings, "about", locale)
                 .split(/\n{2,}/)
                 .map((p, i) => (
-                  <p key={i}>{p}</p>
+                  <p key={i} className="whitespace-pre-line">{p}</p>
                 ))}
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -58,7 +59,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
                 </a>
               ) : null}
               {settings.cvEnUrl ? (
-                <a href={settings.cvEnUrl} target="_blank" rel="noopener" className={buttonClass(locale === "en" ? "primary" : "secondary")}>
+                <a href={settings.cvEnUrl} target="_blank" rel="noopener" className={buttonClass(locale !== "fr" ? "primary" : "secondary")}>
                   <Download className="size-4" aria-hidden /> {t("cvEn")}
                 </a>
               ) : null}
@@ -88,17 +89,17 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
         <section className="mt-24">
           <h2 className="font-display text-3xl font-semibold">{t("timeline")}</h2>
-          <ol className="relative mt-10 border-l border-line pl-8">
+          <ol className="relative mt-10 border-s border-line ps-8">
             {experiences.map((exp, i) => (
               <li key={exp.id} className="relative pb-10 last:pb-0">
                 <span
-                  className={`absolute -left-[2.35rem] top-1.5 size-3 rounded-full ring-4 ring-bg ${exp.endDate ? "bg-line-strong" : "bg-accent-2"}`}
+                  className={`absolute -start-[2.35rem] top-1.5 size-3 rounded-full ring-4 ring-bg ${exp.endDate ? "bg-line-strong" : "bg-accent-2"}`}
                   aria-hidden
                 />
                 <Reveal delay={Math.min(i, 4) * 0.04}>
                   <p className="font-mono text-xs text-muted">
                     {fmt.format(new Date(exp.startDate))} — {exp.endDate ? fmt.format(new Date(exp.endDate)) : tc("present")}
-                    <span className="ml-3 rounded border border-line px-1.5 py-0.5 text-[10px] uppercase">{t(`kind.${exp.kind}`)}</span>
+                    <span className="ms-3 rounded border border-line px-1.5 py-0.5 text-[10px] uppercase">{t(`kind.${exp.kind}`)}</span>
                   </p>
                   <h3 className="mt-2 font-display text-xl font-semibold">{loc(exp, "role", locale)}</h3>
                   <p className="text-accent">{exp.company}</p>
@@ -111,6 +112,17 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
 
         {faq.length ? (
           <section className="mt-24">
+            <JsonLdScript
+              data={{
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: faq.map((item) => ({
+                  "@type": "Question",
+                  name: loc(item, "question", locale),
+                  acceptedAnswer: { "@type": "Answer", text: loc(item, "answer", locale) },
+                })),
+              }}
+            />
             <h2 className="font-display text-3xl font-semibold">{t("faq")}</h2>
             <div className="mt-8 divide-y divide-line border-y border-line">
               {faq.map((item) => (

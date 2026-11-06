@@ -1,5 +1,6 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -9,6 +10,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { parseFields, slugify, type FieldErrors } from "./form-data";
 import { requireAdmin } from "./guard";
 import { getResource, settingsFields } from "./resources";
+import { seedContent } from "./seed-content";
 
 export type FormState = { ok?: boolean; error?: string; errors?: FieldErrors; message?: string };
 
@@ -206,4 +208,42 @@ export async function deleteConversation(id: string): Promise<void> {
   await requireDb().chatConversation.delete({ where: { id } });
   revalidatePath("/admin/conversations");
   redirect("/admin/conversations");
+}
+
+// ─── Testimonial invites (single-use links for past clients) ─────────────────
+
+const INVITE_DAYS = 30;
+const inviteSchema = z.object({
+  name: z.string().trim().max(100).transform((v) => v || null),
+  email: z.union([z.literal(""), z.string().trim().toLowerCase().email()]).transform((v) => v || null),
+  project: z.string().trim().max(150).transform((v) => v || null),
+  locale: z.enum(["fr", "en", "ar"]),
+});
+
+export async function createInvite(_prev: FormState, fd: FormData): Promise<FormState> {
+  await requireAdmin();
+  const parsed = inviteSchema.safeParse(Object.fromEntries(["name", "email", "project", "locale"].map((k) => [k, String(fd.get(k) ?? "")])));
+  if (!parsed.success) return { error: "E-mail invalide." };
+  await requireDb().testimonialInvite.create({
+    data: { ...parsed.data, token: randomBytes(24).toString("base64url"), expiresAt: new Date(Date.now() + INVITE_DAYS * 864e5) },
+  });
+  revalidatePath("/admin/invitations");
+  return { ok: true, message: "Lien créé : copiez-le ou envoyez-le ci-dessous." };
+}
+
+export async function deleteInvite(id: string): Promise<void> {
+  await requireAdmin();
+  await requireDb().testimonialInvite.delete({ where: { id } });
+  revalidatePath("/admin/invitations");
+}
+
+// ─── Site content import (bundled defaults → database) ───────────────────────
+
+export async function importContent(force: boolean): Promise<void> {
+  await requireAdmin();
+  const r = await seedContent(requireDb(), { force });
+  revalidateSite();
+  const parts = [r.settings && "paramètres", r.projects && `${r.projects} projet(s)`, r.services && `${r.services} service(s)`, r.skills && `${r.skills} groupe(s) de compétences`, r.stats && `${r.stats} chiffre(s) clé(s)`, r.experiences && `${r.experiences} étape(s) du parcours`, r.faq && `${r.faq} question(s) FAQ`].filter(Boolean);
+  const summary = parts.length ? `${force ? "Contenu réinitialisé" : "Ajouté"} : ${parts.join(", ")}.` : "Rien à ajouter : tout le contenu existe déjà.";
+  redirect(`/admin/settings?imported=${encodeURIComponent(summary)}`);
 }

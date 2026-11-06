@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { intlLocale } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,14 +13,14 @@ export function absoluteUrl(path = "/") {
 }
 
 export function formatNumber(value: number, locale: string, decimals = 0) {
-  return new Intl.NumberFormat(locale === "en" ? "en-US" : "fr-FR", {
+  return new Intl.NumberFormat(intlLocale(locale), {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   }).format(value);
 }
 
 export function compactNumber(value: number, locale: string) {
-  return new Intl.NumberFormat(locale === "en" ? "en-US" : "fr-FR", {
+  return new Intl.NumberFormat(intlLocale(locale), {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(value);

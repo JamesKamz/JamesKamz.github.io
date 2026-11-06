@@ -22,7 +22,7 @@ export function ProjectCard({ project, locale, eager = false, headingLevel = 3 }
             className="object-cover object-top transition duration-700 group-hover:scale-[1.04]"
           />
         ) : null}
-        <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+        <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
           {project.categories.map((c) => (
             <span key={c} className="rounded-md bg-bg/85 px-2 py-1 font-mono text-[11px] text-fg backdrop-blur">
               {t(`filters.${c}`)}
@@ -37,7 +37,7 @@ export function ProjectCard({ project, locale, eager = false, headingLevel = 3 }
               {title}
             </Link>
           </Heading>
-          <ArrowUpRight className="mt-1 size-5 shrink-0 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden />
+          <ArrowUpRight className="mt-1 size-5 shrink-0 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" aria-hidden />
         </div>
         <p className="mt-2 text-fg-soft">{loc(project, "summary", locale)}</p>
         <p className="mt-auto pt-5 font-mono text-xs text-muted">{project.stack.slice(0, 4).join(" · ")}</p>

@@ -146,7 +146,7 @@ export default function ChatPanel({ open, setOpen }: { open: boolean; setOpen: (
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="card fixed inset-x-3 bottom-20 z-[65] flex max-h-[min(36rem,calc(100dvh-7rem))] flex-col overflow-hidden shadow-2xl shadow-black/40 sm:inset-x-auto sm:right-5 sm:w-[24rem]"
+            className="card fixed inset-x-3 bottom-20 z-[65] flex max-h-[min(36rem,calc(100dvh-7rem))] flex-col overflow-hidden shadow-2xl shadow-black/40 sm:inset-x-auto sm:end-5 sm:w-[24rem]"
           >
             <div className="flex items-center gap-3 border-b border-line px-4 py-3">
               <span className="grid size-9 place-items-center rounded-full bg-accent text-accent-fg">
@@ -164,13 +164,13 @@ export default function ChatPanel({ open, setOpen }: { open: boolean; setOpen: (
             </div>
 
             <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4 text-sm" aria-live="polite">
-              <div className="max-w-[90%] rounded-2xl rounded-tl-sm bg-surface-2 px-3.5 py-2.5">{t("welcome")}</div>
+              <div className="max-w-[90%] rounded-2xl rounded-ss-sm bg-surface-2 px-3.5 py-2.5">{t("welcome")}</div>
               {messages.map((m, i) => (
                 <div
                   key={i}
                   className={cn(
                     "max-w-[90%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5",
-                    m.role === "user" ? "ml-auto rounded-tr-sm bg-accent text-accent-fg" : "rounded-tl-sm bg-surface-2",
+                    m.role === "user" ? "ms-auto rounded-se-sm bg-accent text-accent-fg" : "rounded-ss-sm bg-surface-2",
                   )}
                 >
                   {m.role === "assistant" ? <RichText text={m.content} /> : m.content}

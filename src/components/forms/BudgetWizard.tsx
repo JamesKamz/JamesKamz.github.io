@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { buttonClass } from "@/components/ui/Button";
-import { computeEstimate, CURRENCIES, formatMoney, type PricingConfig } from "@/lib/pricing";
+import { computeEstimate, currencyForTimeZone, DISPLAY_CURRENCIES, formatMoney, optionLabel, type DisplayCurrency, type PricingConfig } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import type { LeadContact } from "./LeadForm";
 
@@ -16,7 +16,9 @@ const LeadForm = dynamic(() => import("./LeadForm"), { ssr: false });
 const STEPS = ["type", "features", "timeline", "design", "result"] as const;
 type Step = (typeof STEPS)[number];
 
-type Option = { key: string; labelFr: string; labelEn: string; hint?: string };
+const CURRENCY_LABEL: Record<DisplayCurrency, string> = { USD: "USD", MAD: "MAD", XOF: "FCFA" };
+
+type Option = { key: string; labelFr: string; labelEn: string; labelAr?: string; hint?: string };
 
 function OptionCard({
   option,
@@ -40,7 +42,7 @@ function OptionCard({
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        "group flex w-full items-start gap-3 rounded-xl border p-4 text-left transition",
+        "group flex w-full items-start gap-3 rounded-xl border p-4 text-start transition",
         selected ? "border-accent bg-accent/10" : "border-line bg-bg-elev hover:border-line-strong",
       )}
     >
@@ -55,7 +57,7 @@ function OptionCard({
         {selected ? <Check className="size-3.5" strokeWidth={3} /> : null}
       </span>
       <span>
-        <span className="block font-medium">{locale === "en" ? option.labelEn : option.labelFr}</span>
+        <span className="block font-medium">{optionLabel(option, locale)}</span>
         {hint ? <span className="mt-0.5 block font-mono text-xs text-muted">{hint}</span> : null}
       </span>
     </button>
@@ -72,6 +74,9 @@ export function BudgetWizard({ pricing }: { pricing: PricingConfig }) {
   const [design, setDesign] = useState<string>("custom");
   const [showError, setShowError] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error" | "rate">("idle");
+  // null = guessed from the visitor's location; the result step only renders client-side, after interaction.
+  const [picked, setPicked] = useState<DisplayCurrency | null>(null);
+  const currency = picked ?? currencyForTimeZone(typeof Intl === "undefined" ? undefined : Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   const index = STEPS.indexOf(step);
   const estimate = useMemo(() => {
@@ -198,18 +203,28 @@ export function BudgetWizard({ pricing }: { pricing: PricingConfig }) {
             {step === "result" && estimate ? (
               <div>
                 <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">{t("estimate")}</h2>
-                <div className="mt-6 grid gap-3 sm:grid-cols-3" data-testid="estimate">
-                  {CURRENCIES.map((c) => (
-                    <div key={c} className="rounded-xl border border-line bg-bg-elev p-5">
-                      <p className="font-mono text-xs text-muted">{c}</p>
-                      <p className="mt-2 font-display text-xl font-semibold tabular-nums sm:text-2xl">
-                        {formatMoney(estimate.ranges[c].min, c, locale)}
-                        <span className="text-muted"> – </span>
-                        <br className="hidden sm:block lg:hidden" />
-                        {formatMoney(estimate.ranges[c].max, c, locale)}
-                      </p>
+                <div className="mt-6 rounded-xl border border-line bg-bg-elev p-6" data-testid="estimate">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="font-mono text-xs text-muted">{CURRENCY_LABEL[currency]}</p>
+                    <div role="group" aria-label={t("currency")} className="flex rounded-full border border-line p-1 font-mono text-xs">
+                      {DISPLAY_CURRENCIES.map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          aria-pressed={c === currency}
+                          onClick={() => setPicked(c)}
+                          className={cn("rounded-full px-3 py-1 transition", c === currency ? "bg-surface-2 text-accent" : "text-muted hover:text-fg")}
+                        >
+                          {CURRENCY_LABEL[c]}
+                        </button>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  <p className="mt-3 font-display text-3xl font-semibold tabular-nums sm:text-4xl">
+                    {formatMoney(estimate.ranges[currency].min, currency, locale)}
+                    <span className="text-muted"> – </span>
+                    {formatMoney(estimate.ranges[currency].max, currency, locale)}
+                  </p>
                 </div>
                 <p className="mt-4 text-sm text-muted">{t("disclaimer")}</p>
 
@@ -239,11 +254,11 @@ export function BudgetWizard({ pricing }: { pricing: PricingConfig }) {
 
         <div className="mt-8 flex items-center justify-between gap-3 border-t border-line pt-6">
           <button type="button" onClick={() => go(-1)} disabled={index === 0} className={buttonClass("ghost", "px-0")}>
-            <ArrowLeft className="size-4" aria-hidden /> {t("previous")}
+            <ArrowLeft className="size-4 rtl:-scale-x-100" aria-hidden /> {t("previous")}
           </button>
           {step !== "result" ? (
             <button type="button" onClick={() => go(1)} className={buttonClass("primary")}>
-              {step === "design" ? t("seeEstimate") : t("next")} <ArrowRight className="size-4" aria-hidden />
+              {step === "design" ? t("seeEstimate") : t("next")} <ArrowRight className="size-4 rtl:-scale-x-100" aria-hidden />
             </button>
           ) : null}
         </div>

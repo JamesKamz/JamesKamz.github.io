@@ -1,10 +1,12 @@
-import { Eye, EyeOff, Plus, Star } from "lucide-react";
+import { Eye, EyeOff, MailPlus, Plus, Star } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
+import { Modal } from "@/components/admin/Modal";
 import { NoDatabase, PageHeader } from "@/components/admin/PageHeader";
+import { ResourceForm } from "@/components/admin/ResourceForm";
 import { buttonClass } from "@/components/ui/Button";
-import { deleteResource, toggleResource } from "@/lib/admin/actions";
+import { deleteResource, saveResource, toggleResource } from "@/lib/admin/actions";
 import { getResource } from "@/lib/admin/resources";
 import { getDb } from "@/lib/db";
 
@@ -21,19 +23,26 @@ export default async function ResourceList({ params, searchParams }: PageProps<"
   if (!resource) notFound();
   const db = getDb();
   if (!db) return <NoDatabase />;
-  const saved = (await searchParams).saved;
+  const sp = await searchParams;
   const delegate = (db as unknown as Record<string, { findMany(a: unknown): Promise<Record<string, unknown>[]> }>)[resource.model]!;
   const rows = await delegate.findMany({ orderBy: resource.orderBy });
   const labelOf = (name: string) => resource.fields.find((f) => f.name === name)?.label ?? name;
+  const editing = typeof sp.edit === "string" ? rows.find((r) => String(r.id) === sp.edit) : undefined;
+  const defaults: Record<string, unknown> = { published: resource.key !== "testimonials", visible: true, order: 0, rating: 5 };
 
   return (
     <>
       <PageHeader title={resource.title} description={resource.description}>
-        <Link href={`/admin/${key}/new`} className={buttonClass("primary", "px-4 py-2.5")}>
+        {key === "testimonials" ? (
+          <Link href="/admin/invitations" className={buttonClass("secondary", "px-4 py-2.5")}>
+            <MailPlus className="size-4" aria-hidden /> Inviter un client
+          </Link>
+        ) : null}
+        <Link href={`/admin/${key}?new=1`} scroll={false} className={buttonClass("primary", "px-4 py-2.5")}>
           <Plus className="size-4" aria-hidden /> Ajouter
         </Link>
       </PageHeader>
-      {saved ? <p role="status" className="mb-4 text-sm text-accent-2">Enregistré ✓ — le site public est à jour.</p> : null}
+      {sp.saved ? <p role="status" className="mb-4 text-sm text-accent-2">Enregistré ✓ — le site public est à jour.</p> : null}
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[640px] text-sm">
           <thead>
@@ -55,7 +64,7 @@ export default async function ResourceList({ params, searchParams }: PageProps<"
                   {resource.columns.map((c, i) => (
                     <td key={c} className="max-w-xs truncate px-4 py-3">
                       {i === 0 ? (
-                        <Link href={`/admin/${key}/${id}`} className="font-medium hover:text-accent">
+                        <Link href={`/admin/${key}?edit=${id}`} scroll={false} className="font-medium hover:text-accent">
                           {display(row[c])}
                           {row.isExample ? <span className="ml-2 rounded bg-danger/15 px-1.5 py-0.5 font-mono text-[10px] text-danger">EXEMPLE</span> : null}
                         </Link>
@@ -75,7 +84,7 @@ export default async function ResourceList({ params, searchParams }: PageProps<"
                     </td>
                   ))}
                   <td className="px-4 py-3 text-right">
-                    <Link href={`/admin/${key}/${id}`} className="mr-4 text-sm text-accent hover:underline">Modifier</Link>
+                    <Link href={`/admin/${key}?edit=${id}`} scroll={false} className="mr-4 text-sm text-accent hover:underline">Modifier</Link>
                     <ConfirmButton action={deleteResource.bind(null, key, id)}>Supprimer</ConfirmButton>
                   </td>
                 </tr>
@@ -89,6 +98,21 @@ export default async function ResourceList({ params, searchParams }: PageProps<"
           </tbody>
         </table>
       </div>
+      {sp.new ? (
+        <Modal title={`Nouveau ${resource.singular}`} closeHref={`/admin/${key}`}>
+          <ResourceForm action={saveResource.bind(null, key, null)} fields={resource.fields} values={defaults} />
+        </Modal>
+      ) : null}
+      {editing ? (
+        <Modal
+          key={String(editing.id)}
+          title={display(editing[resource.columns[0]!])}
+          description={editing.isExample ? "⚠ Exemple fictif : remplacez-le par un vrai avis avant de le publier." : undefined}
+          closeHref={`/admin/${key}`}
+        >
+          <ResourceForm action={saveResource.bind(null, key, String(editing.id))} fields={resource.fields} values={editing} />
+        </Modal>
+      ) : null}
     </>
   );
 }

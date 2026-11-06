@@ -7,7 +7,7 @@ import { estimateInputSchema } from "./budget"; // also applies z.config({ jitle
  */
 const phoneRegex = /^[+\d(][\d\s().-]{5,24}$/;
 
-export const localeSchema = z.enum(["fr", "en"]).default("fr");
+export const localeSchema = z.enum(["fr", "en", "ar"]).default("fr");
 
 /** Honeypot: must stay empty (hidden field bots tend to fill). */
 export const honeypot = z.string().max(0).optional().or(z.literal(""));
@@ -54,6 +54,30 @@ export const leadSchema = estimateInputSchema.extend({
 });
 
 export type LeadInput = z.input<typeof leadSchema>;
+
+/** Testimonial sent by a past client through a single-use invite link. */
+export const testimonialSubmitSchema = z.object({
+  token: z.string().min(20).max(100),
+  name: z.string().trim().min(2, { message: "name" }).max(100, { message: "tooLong" }),
+  role: optionalText(120),
+  company: optionalText(120),
+  country: optionalText(80),
+  project: optionalText(150),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .optional()
+    .refine((v) => !v || z.string().email().safeParse(v).success, { message: "email" })
+    .transform((v) => (v ? v : undefined)),
+  rating: z.coerce.number({ message: "rating" }).int({ message: "rating" }).min(1, { message: "rating" }).max(5, { message: "rating" }),
+  message: z.string().trim().min(20, { message: "testimonial" }).max(2000, { message: "tooLong" }),
+  consent: z.literal(true, { message: "consent" }),
+  website: honeypot,
+  locale: localeSchema,
+});
+
+export type TestimonialSubmitInput = z.input<typeof testimonialSubmitSchema>;
 
 export const chatRequestSchema = z.object({
   conversationId: z.string().cuid().optional(),

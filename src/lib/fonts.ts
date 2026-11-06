@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Sans_Arabic, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 
 export const fontDisplay = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -20,4 +20,13 @@ export const fontMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const fontVariables = `${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable}`;
+// Fallback for Arabic glyphs in every stack; not preloaded, so FR/EN pages never download it.
+export const fontArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic",
+  display: "swap",
+  preload: false,
+});
+
+export const fontVariables = `${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} ${fontArabic.variable}`;

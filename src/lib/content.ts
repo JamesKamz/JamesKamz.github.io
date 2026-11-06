@@ -91,6 +91,7 @@ export const getTestimonials = cache(
       () =>
         getDb()!.testimonial.findMany({
           where: { published: true },
+          omit: { email: true }, // private contact, never sent to the public site
           orderBy: [{ order: "asc" }, { createdAt: "desc" }],
         }),
       defaultTestimonials.filter((t) => t.published),

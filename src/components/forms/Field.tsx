@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import type { FieldError } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-type Key = "name" | "email" | "phone" | "subject" | "message" | "tooLong";
-const knownKeys: Key[] = ["name", "email", "phone", "subject", "message", "tooLong"];
+type Key = "name" | "email" | "phone" | "subject" | "message" | "tooLong" | "rating" | "testimonial" | "consent";
+const knownKeys: Key[] = ["name", "email", "phone", "subject", "message", "tooLong", "rating", "testimonial", "consent"];
 
 export function FieldErrorText({ id, error }: { id: string; error?: FieldError }) {
   const t = useTranslations("validation");

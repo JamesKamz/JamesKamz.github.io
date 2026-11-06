@@ -4,19 +4,20 @@ import { BudgetWizard } from "@/components/forms/BudgetWizard";
 import { Zellige } from "@/components/site/Zellige";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getPricing } from "@/lib/content";
-import { alternates } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import type { Locale } from "@/lib/types";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/budget">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "budget" });
-  return { title: t("title"), description: t("subtitle"), alternates: alternates("/budget", locale) };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "budget" });
+  return pageMetadata({ title: t("title"), description: t("subtitle"), href: "/budget", locale });
 }
 
 export default async function BudgetPage({ params }: PageProps<"/[locale]/budget">) {
   const { locale } = await params;
-  setRequestLocale(locale as "fr" | "en");
+  setRequestLocale(locale as Locale);
   const [t, pricing] = await Promise.all([getTranslations("budget"), getPricing()]);
   return (
     <div className="relative isolate">

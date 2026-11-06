@@ -13,7 +13,7 @@ function toDateInput(value: unknown) {
 export function AdminField({ field, value, error }: { field: Field; value: unknown; error?: string }) {
   const id = `f-${field.name}`;
   const wide = field.wide || field.type === "textarea" || field.type === "images" || field.type === "multiselect";
-  const common = { id, name: field.name, "aria-invalid": error ? true : undefined, "aria-describedby": error ? `${id}-err` : undefined };
+  const common = { id, name: field.name, "aria-invalid": error ? true : undefined, "aria-describedby": error ? `${id}-err` : undefined, dir: field.dir };
 
   let control: React.ReactNode;
   switch (field.type) {

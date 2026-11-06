@@ -13,7 +13,7 @@ export default function NotFound() {
           <span className="size-3 rounded-full bg-[#ff5f57]" />
           <span className="size-3 rounded-full bg-[#febc2e]" />
           <span className="size-3 rounded-full bg-[#28c840]" />
-          <span className="ml-3 font-mono text-xs text-muted">bash — 404</span>
+          <span className="ms-3 font-mono text-xs text-muted">bash — 404</span>
         </div>
         <div className="p-6 font-mono text-sm sm:p-8">
           <p>

@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
+import { bookAppointment, bookAppointmentTool, BOOK_TOOL_NAME } from "@/lib/booking";
 import { buildSystemPrompt } from "@/lib/chat-prompt";
 import { getSettings } from "@/lib/content";
 import { getDb } from "@/lib/db";
@@ -15,6 +16,8 @@ const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-5-5";
 const FALLBACK_MODELS = new Set(["claude-opus-5-5", "claude-opus-5", "claude-fable-5-1", "claude-sonnet-5-5"]);
 /** Keep the request bounded: only the most recent turns are sent to the model. */
 const HISTORY_LIMIT = 16;
+/** Model turns per reply: answer, tool call, follow-up after the tool result. */
+const MAX_TOOL_TURNS = 3;
 
 export async function POST(request: Request) {
   if (!isSameOrigin(request.headers)) return jsonError(403, "forbidden");
@@ -65,36 +68,76 @@ export async function POST(request: Request) {
   const client = new Anthropic();
   const useFallback = FALLBACK_MODELS.has(MODEL);
   const isHaiku = MODEL.includes("haiku");
-
-  const stream = client.beta.messages.stream({
-    model: MODEL,
-    max_tokens: 4096,
-    system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
-    messages: history.map((m) => ({ role: m.role, content: m.content })),
-    ...(isHaiku ? {} : { output_config: { effort: "low" as const } }),
-    ...(useFallback ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const } : {}),
-  });
+  const conversation: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
+  // One stream per model turn; a booking adds a tool turn, so a reply needs at most a few.
+  const openStream = () =>
+    client.beta.messages.stream({
+      model: MODEL,
+      max_tokens: 4096,
+      system: [
+        { type: "text", text: system, cache_control: { type: "ephemeral" } },
+        // After the cache breakpoint: changes every request without invalidating the cached prompt.
+        { type: "text", text: `Current date and time: ${new Date().toUTCString()}.` },
+      ],
+      tools: [bookAppointmentTool],
+      messages: conversation,
+      ...(isHaiku ? {} : { output_config: { effort: "low" as const } }),
+      ...(useFallback ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const } : {}),
+    });
+  let stream = openStream();
 
   const encoder = new TextEncoder();
-  const refusal =
-    locale === "en"
-      ? "Sorry, I can't help with that. Feel free to ask about James's services or to contact him directly."
-      : "Désolé, je ne peux pas répondre à cela. N'hésitez pas à me poser une question sur les services de James ou à le contacter directement.";
+  const refusal = {
+    en: "Sorry, I can't help with that. Feel free to ask about James's services or to contact him directly.",
+    fr: "Désolé, je ne peux pas répondre à cela. N'hésitez pas à me poser une question sur les services de James ou à le contacter directement.",
+    ar: "عذرًا، لا يمكنني المساعدة في ذلك. لا تتردد في السؤال عن خدمات جيمس أو التواصل معه مباشرة.",
+  }[locale];
 
   const body$ = new ReadableStream<Uint8Array>({
     async start(controller) {
       let answer = "";
+      const write = (text: string) => {
+        answer += text;
+        controller.enqueue(encoder.encode(text));
+      };
       try {
-        for await (const event of stream) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            answer += event.delta.text;
-            controller.enqueue(encoder.encode(event.delta.text));
+        for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
+          if (turn > 0) {
+            if (answer && !/\s$/.test(answer)) write("\n\n");
+            stream = openStream();
           }
-        }
-        const final = await stream.finalMessage();
-        if (final.stop_reason === "refusal" && !answer.trim()) {
-          answer = refusal;
-          controller.enqueue(encoder.encode(refusal));
+          let final: Anthropic.Beta.BetaMessage;
+          try {
+            for await (const event of stream) {
+              if (event.type === "content_block_delta" && event.delta.type === "text_delta") write(event.delta.text);
+            }
+            final = await stream.finalMessage();
+          } catch (error) {
+            // Eager input streaming: a tool input that is not JSON at all rejects here. Retry that turn once.
+            if (error instanceof Anthropic.APIError || turn === MAX_TOOL_TURNS - 1) throw error;
+            console.error("[chat] unparseable tool input, retrying the turn");
+            continue;
+          }
+
+          if (final.stop_reason === "refusal") {
+            if (!answer.trim()) write(refusal);
+            break;
+          }
+          const toolUses = final.content.filter((b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use");
+          // Never run a tool whose input may have been cut off at max_tokens.
+          if (final.stop_reason !== "tool_use" || !toolUses.length) break;
+
+          // Pass the whole assistant turn back unchanged (thinking blocks included).
+          conversation.push({ role: "assistant", content: final.content });
+          const results: Anthropic.Beta.BetaToolResultBlockParam[] = [];
+          for (const use of toolUses) {
+            const result =
+              use.name === BOOK_TOOL_NAME
+                ? await bookAppointment(use.input, { locale, ipHash })
+                : { content: JSON.stringify({ error: "unknown_tool" }), isError: true };
+            results.push({ type: "tool_result", tool_use_id: use.id, content: result.content, is_error: result.isError });
+          }
+          conversation.push({ role: "user", content: results });
         }
       } catch (error) {
         if (error instanceof Anthropic.RateLimitError) console.error("[chat] Anthropic rate limit");

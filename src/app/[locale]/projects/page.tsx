@@ -4,19 +4,20 @@ import { CtaBand } from "@/components/sections/CtaBand";
 import { ProjectsGrid } from "@/components/sections/ProjectsGrid";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getProjects } from "@/lib/content";
-import { alternates } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import type { Locale } from "@/lib/types";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "projects" });
-  return { title: t("title"), description: t("subtitle"), alternates: alternates("/projects", locale) };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "projects" });
+  return pageMetadata({ title: t("title"), description: t("subtitle"), href: "/projects", locale });
 }
 
 export default async function ProjectsPage({ params }: PageProps<"/[locale]/projects">) {
   const { locale } = await params;
-  setRequestLocale(locale as "fr" | "en");
+  setRequestLocale(locale as Locale);
   const [t, projects] = await Promise.all([getTranslations("projects"), getProjects()]);
   return (
     <>

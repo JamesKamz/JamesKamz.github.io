@@ -4,14 +4,44 @@
  * All prices are expressed in the base currency (EUR).
  */
 
-export const CURRENCIES = ["MAD", "EUR", "USD"] as const;
-export type Currency = (typeof CURRENCIES)[number];
+import { intlLocale } from "./types";
 
-type Labelled = { key: string; labelFr: string; labelEn: string };
+/** Every currency an estimate is computed in. EUR is the internal base (admin, stored leads). */
+export const CURRENCIES = ["EUR", "USD", "MAD", "XOF"] as const;
+export type Currency = (typeof CURRENCIES)[number];
+/** Currencies quoted to visitors — no EUR on the public side. */
+export const DISPLAY_CURRENCIES = ["USD", "MAD", "XOF"] as const satisfies readonly Currency[];
+export type DisplayCurrency = (typeof DISPLAY_CURRENCIES)[number];
+/** Fixed CFA franc peg. */
+export const XOF_PER_EUR = 655.957;
+
+// UEMOA countries and their West African neighbours share the CFA quote.
+const WEST_AFRICA_TZ = new Set([
+  "Africa/Abidjan", "Africa/Accra", "Africa/Bamako", "Africa/Banjul", "Africa/Bissau", "Africa/Conakry", "Africa/Dakar",
+  "Africa/Freetown", "Africa/Lagos", "Africa/Lome", "Africa/Monrovia", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo",
+]);
+
+/**
+ * Quote currency for a visitor: Morocco → MAD, West Africa → CFA franc, everyone else (Europe included) → USD.
+ * shortcut: guessed from the browser time zone (works with cached pages and locally); switch to the edge geo header if precision matters.
+ */
+export function currencyForTimeZone(timeZone: string | undefined): DisplayCurrency {
+  if (timeZone === "Africa/Casablanca" || timeZone === "Africa/El_Aaiun") return "MAD";
+  if (timeZone && WEST_AFRICA_TZ.has(timeZone)) return "XOF";
+  return "USD";
+}
+
+type Labelled = { key: string; labelFr: string; labelEn: string; labelAr?: string };
+
+/** Localized option label; Arabic falls back to English. */
+export function optionLabel(option: Labelled, locale: string): string {
+  if (locale === "ar") return option.labelAr || option.labelEn;
+  return locale === "en" ? option.labelEn : option.labelFr;
+}
 
 export type PricingConfig = {
   /** Amount of each currency for 1 EUR. */
-  rates: { EUR: 1; MAD: number; USD: number };
+  rates: { EUR: 1; MAD: number; USD: number; XOF: number };
   /** Width of the range around the central estimate (0.2 → ±20%). */
   spread: number;
   projectTypes: (Labelled & { base: number })[];
@@ -33,7 +63,8 @@ export class EstimateError extends Error {}
 
 /** Round to a "friendly" step depending on the magnitude/currency. */
 export function roundFriendly(value: number, currency: Currency): number {
-  const step = currency === "MAD" ? (value >= 20000 ? 500 : 100) : value >= 2000 ? 50 : 10;
+  const step =
+    currency === "XOF" ? (value >= 1_000_000 ? 50_000 : 10_000) : currency === "MAD" ? (value >= 20000 ? 500 : 100) : value >= 2000 ? 50 : 10;
   return Math.max(step, Math.round(value / step) * step);
 }
 
@@ -65,7 +96,7 @@ export function computeEstimate(pricing: PricingConfig, input: EstimateInput): E
 }
 
 export function formatMoney(value: number, currency: Currency, locale: string): string {
-  return new Intl.NumberFormat(locale === "en" ? "en-US" : "fr-FR", {
+  return new Intl.NumberFormat(intlLocale(locale), {
     style: "currency",
     currency,
     maximumFractionDigits: 0,
@@ -73,7 +104,7 @@ export function formatMoney(value: number, currency: Currency, locale: string): 
 }
 
 export const defaultPricing: PricingConfig = {
-  rates: { EUR: 1, MAD: 10.8, USD: 1.08 },
+  rates: { EUR: 1, MAD: 10.8, USD: 1.08, XOF: XOF_PER_EUR },
   spread: 0.2,
   projectTypes: [
     { key: "saas", labelFr: "SaaS sur mesure (MVP → production)", labelEn: "Custom SaaS (MVP → production)", base: 4500 },

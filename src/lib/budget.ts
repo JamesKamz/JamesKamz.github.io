@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defaultPricing, type PricingConfig } from "./pricing";
+import { defaultPricing, XOF_PER_EUR, type PricingConfig } from "./pricing";
 
 export * from "./pricing";
 
@@ -10,6 +10,7 @@ const labelled = {
   key: z.string().min(1).max(40).regex(/^[a-z0-9-]+$/),
   labelFr: z.string().min(1).max(80),
   labelEn: z.string().min(1).max(80),
+  labelAr: z.string().max(80).optional(),
 };
 
 export const pricingSchema = z.object({
@@ -18,6 +19,8 @@ export const pricingSchema = z.object({
     EUR: z.literal(1),
     MAD: z.number().positive(),
     USD: z.number().positive(),
+    // Older saved configs have no XOF rate: fall back to the fixed peg.
+    XOF: z.number().positive().default(XOF_PER_EUR),
   }),
   /** Width of the range around the central estimate (0.2 → ±20%). */
   spread: z.number().min(0).max(0.9),

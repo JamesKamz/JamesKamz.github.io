@@ -14,7 +14,7 @@ const lists: { key: ListKey; title: string; valueKey: "base" | "cost" | "multipl
   { key: "designLevels", title: "Niveaux de design (multiplicateur)", valueKey: "multiplier", valueLabel: "×", step: "0.05" },
 ];
 
-type Row = { key: string; labelFr: string; labelEn: string } & Record<string, string | number>;
+type Row = { key: string; labelFr: string; labelEn: string; labelAr?: string } & Record<string, string | number | undefined>;
 
 export function PricingEditor({ action, initial }: { action: (p: FormState, fd: FormData) => Promise<FormState>; initial: PricingConfig }) {
   const [state, formAction, pending] = useActionState(action, {});
@@ -42,8 +42,8 @@ export function PricingEditor({ action, initial }: { action: (p: FormState, fd: 
   return (
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="pricing" value={JSON.stringify(pricing)} />
-      <section className="card grid gap-5 p-6 md:grid-cols-4">
-        <h2 className="font-medium md:col-span-4">Taux de change & fourchette</h2>
+      <section className="card grid gap-5 p-6 md:grid-cols-5">
+        <h2 className="font-medium md:col-span-5">Taux de change & fourchette</h2>
         <div>
           <span className="label">1 EUR =</span>
           <p className="input bg-transparent font-mono">1 EUR</p>
@@ -57,11 +57,15 @@ export function PricingEditor({ action, initial }: { action: (p: FormState, fd: 
           <input id="rate-usd" type="number" step="0.01" min="0" className="input" value={pricing.rates.USD} onChange={(e) => setPricing((p) => ({ ...p, rates: { ...p.rates, USD: Number(e.target.value) } }))} />
         </div>
         <div>
+          <span className="label">FCFA pour 1 EUR (taux fixe)</span>
+          <p className="input bg-transparent font-mono">{pricing.rates.XOF}</p>
+        </div>
+        <div>
           <label htmlFor="spread" className="label">Largeur de fourchette (±%)</label>
           <input id="spread" type="number" step="1" min="0" max="90" className="input" value={Math.round(pricing.spread * 100)} onChange={(e) => setPricing((p) => ({ ...p, spread: Number(e.target.value) / 100 }))} />
         </div>
         {preview ? (
-          <p className="text-sm text-muted md:col-span-4">
+          <p className="text-sm text-muted md:col-span-5">
             Aperçu ({pricing.projectTypes[0]?.labelFr} + 2 fonctionnalités) :{" "}
             <span className="font-mono text-fg">{formatMoney(preview.ranges.EUR.min, "EUR", "fr")} – {formatMoney(preview.ranges.EUR.max, "EUR", "fr")}</span>
             {" · "}
@@ -78,12 +82,13 @@ export function PricingEditor({ action, initial }: { action: (p: FormState, fd: 
               <Plus className="size-4" aria-hidden /> Ajouter
             </button>
           </div>
-          <table className="mt-4 w-full min-w-[640px] text-sm">
+          <table className="mt-4 w-full min-w-[820px] text-sm">
             <thead>
               <tr className="text-left font-mono text-xs text-muted">
                 <th className="pb-2 font-normal">Clé</th>
                 <th className="pb-2 font-normal">Libellé FR</th>
                 <th className="pb-2 font-normal">Libellé EN</th>
+                <th className="pb-2 font-normal">Libellé AR</th>
                 <th className="w-28 pb-2 font-normal">{valueLabel}</th>
                 <th className="w-10" />
               </tr>
@@ -94,6 +99,7 @@ export function PricingEditor({ action, initial }: { action: (p: FormState, fd: 
                   <td className="py-1 pr-2"><input aria-label="Clé" className="input py-2 font-mono text-xs" value={row.key} onChange={(e) => updateRow(key, i, "key", e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} /></td>
                   <td className="py-1 pr-2"><input aria-label="Libellé FR" className="input py-2" value={row.labelFr} onChange={(e) => updateRow(key, i, "labelFr", e.target.value)} /></td>
                   <td className="py-1 pr-2"><input aria-label="Libellé EN" className="input py-2" value={row.labelEn} onChange={(e) => updateRow(key, i, "labelEn", e.target.value)} /></td>
+                  <td className="py-1 pr-2"><input aria-label="Libellé AR" dir="rtl" placeholder="= EN" className="input py-2" value={row.labelAr ?? ""} onChange={(e) => updateRow(key, i, "labelAr", e.target.value)} /></td>
                   <td className="py-1 pr-2"><input aria-label={valueLabel} type="number" step={step} min="0" className="input py-2 font-mono" value={row[valueKey]} onChange={(e) => updateRow(key, i, valueKey, Number(e.target.value))} /></td>
                   <td className="py-1"><button type="button" onClick={() => removeRow(key, i)} aria-label="Supprimer" className="grid size-9 place-items-center text-muted hover:text-danger"><Trash2 className="size-4" /></button></td>
                 </tr>

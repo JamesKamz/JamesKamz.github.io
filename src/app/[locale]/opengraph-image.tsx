@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { getSettings } from "@/lib/content";
 import { loc, locList } from "@/lib/types";
 
-export const alt = "James Kamz — SaaS Builder, Full-Stack Engineer, Odoo Developer, Automation Expert";
+export const alt = "James Kamz — SaaS Builder & Full-Stack Developer, Odoo and AI";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

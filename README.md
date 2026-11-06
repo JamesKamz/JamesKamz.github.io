@@ -72,7 +72,6 @@ Postgres rapide avec Docker :
 | `CONTACT_FROM_EMAIL` | recommandé | Expéditeur vérifié sur Resend (ex. `Portfolio <noreply@jameskamz.com>`) |
 | `ANTHROPIC_API_KEY` | pour le chatbot | Clé API Anthropic (sans clé, le widget affiche un message d'indisponibilité) |
 | `ANTHROPIC_MODEL` | non | Modèle du chatbot (défaut `claude-opus-5-5`) |
-| `YOUTUBE_API_KEY` | non | YouTube Data API v3 (sinon : carte de repli vers la chaîne) |
 | `BLOB_READ_WRITE_TOKEN` | prod | Vercel Blob pour les uploads d'images/CV depuis l'admin |
 | `AUTH_TRUST_HOST` | hors Vercel | `true` derrière un proxy autre que Vercel |
 

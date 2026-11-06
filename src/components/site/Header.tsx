@@ -50,7 +50,7 @@ export function Header({ alias }: { alias: string }) {
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
+        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
       >
         {t("skip")}
       </a>
@@ -63,7 +63,7 @@ export function Header({ alias }: { alias: string }) {
             <span className="text-fg">{first?.toLowerCase()}</span>
             <span className="text-accent">.</span>
             <span className="text-muted">{second?.toLowerCase()}</span>
-            <span className="ml-0.5 inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent-2" aria-hidden />
+            <span className="ms-0.5 inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent-2" aria-hidden />
           </span>
         </Link>
 
@@ -90,7 +90,7 @@ export function Header({ alias }: { alias: string }) {
           <ThemeToggle label={t("theme")} />
           <Link href="/contact" className={buttonClass("primary", "hidden px-4 py-2.5 md:inline-flex")}>
             {tc("startProject")}
-            <ArrowUpRight className="size-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+            <ArrowUpRight className="size-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" aria-hidden />
           </Link>
           <button
             type="button"

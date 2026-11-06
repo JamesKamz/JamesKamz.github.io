@@ -54,3 +54,6 @@ next-env.d.ts
 
 # uploads (local dev)
 /public/uploads/
+
+# private portfolio notes and source assets (contain client info) — never deploy
+/contexte-portfolio/

@@ -9,6 +9,7 @@ import type { z } from "zod";
 import { buttonClass } from "@/components/ui/Button";
 import { contactSchema } from "@/lib/validation";
 import { Field, Honeypot } from "./Field";
+import type { Locale } from "@/lib/types";
 
 type Input = z.input<typeof contactSchema>;
 type Output = z.output<typeof contactSchema>;
@@ -24,7 +25,7 @@ export function ContactForm({ defaultBudget }: { defaultBudget?: string }) {
     formState: { errors, isSubmitting },
   } = useForm<Input, unknown, Output>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { locale: locale as "fr" | "en", budget: defaultBudget ?? "", website: "" },
+    defaultValues: { locale: locale as Locale, budget: defaultBudget ?? "", website: "" },
   });
 
   const onSubmit = async (values: Output) => {

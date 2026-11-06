@@ -23,7 +23,7 @@ export async function Services({ services, locale }: { services: ServiceView[]; 
           <SectionHeading kicker={t("kicker")} title={t("title")} subtitle={t("subtitle")} />
           <Link href="/contact" className="group inline-flex items-center gap-2 font-mono text-sm text-accent hover:underline">
             {t("cta")}
-            <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+            <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" aria-hidden />
           </Link>
         </div>
 

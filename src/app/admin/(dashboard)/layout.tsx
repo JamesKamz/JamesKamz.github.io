@@ -1,5 +1,5 @@
 import { signOut } from "@/auth";
-import { Sidebar } from "@/components/admin/Sidebar";
+import { DashboardShell } from "@/components/admin/DashboardShell";
 import { requireAdmin } from "@/lib/admin/guard";
 
 export const dynamic = "force-dynamic";
@@ -12,9 +12,8 @@ async function signOutAction() {
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdmin();
   return (
-    <div className="lg:flex">
-      <Sidebar email={session.user.email ?? ""} signOutAction={signOutAction} />
-      <div className="min-w-0 flex-1 px-6 py-8 lg:px-10">{children}</div>
-    </div>
+    <DashboardShell email={session.user.email ?? ""} signOutAction={signOutAction}>
+      {children}
+    </DashboardShell>
   );
 }

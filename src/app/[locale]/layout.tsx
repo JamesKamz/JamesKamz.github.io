@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { LazyCursor } from "@/components/site/LazyCursor";
+import { PageViewTracker } from "@/components/site/PageViewTracker";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -12,8 +13,9 @@ import { ThemeScript } from "@/components/site/ThemeScript";
 import { routing } from "@/i18n/routing";
 import { getSettings } from "@/lib/content";
 import { fontVariables } from "@/lib/fonts";
-import { alternates } from "@/lib/seo";
-import { SITE_URL } from "@/lib/utils";
+import { alternates, OG_LOCALES } from "@/lib/seo";
+import type { Locale } from "@/lib/types";
+import { absoluteUrl, SITE_URL } from "@/lib/utils";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -28,7 +30,7 @@ export const viewport: Viewport = {
 
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as "fr" | "en", namespace: "meta" });
+  const t = await getTranslations({ locale: locale as Locale, namespace: "meta" });
   const settings = await getSettings();
   const title = t("title");
   const description = t("description");
@@ -45,11 +47,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
       siteName: settings.alias,
       title,
       description,
-      locale: locale === "en" ? "en_US" : "fr_FR",
-      alternateLocale: locale === "en" ? ["fr_FR"] : ["en_US"],
+      url: absoluteUrl(locale === routing.defaultLocale ? "/" : `/${locale}`),
+      locale: OG_LOCALES[locale as Locale],
+      alternateLocale: Object.entries(OG_LOCALES).filter(([l]) => l !== locale).map(([, og]) => og),
     },
     twitter: { card: "summary_large_image", title, description },
     robots: { index: true, follow: true },
+    // Search Console ownership: set GOOGLE_SITE_VERIFICATION to the content of Google's meta tag.
+    verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
   };
 }
 
@@ -60,7 +65,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const settings = await getSettings();
 
   return (
-    <html lang={locale} data-theme="dark" className={fontVariables} suppressHydrationWarning>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} data-theme="dark" data-scroll-behavior="smooth" className={fontVariables} suppressHydrationWarning>
       <head>
         <ThemeScript />
         <JsonLd settings={settings} locale={locale} />
@@ -78,6 +83,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             <Footer settings={settings} />
             {settings.chatbotEnabled ? <ChatWidget /> : null}
             <LazyCursor />
+            <PageViewTracker />
           </Providers>
         </NextIntlClientProvider>
       </body>

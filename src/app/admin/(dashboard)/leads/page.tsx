@@ -1,8 +1,11 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { LeadForm } from "@/components/admin/LeadForm";
+import { Modal } from "@/components/admin/Modal";
 import { NoDatabase, PageHeader } from "@/components/admin/PageHeader";
 import { buttonClass } from "@/components/ui/Button";
 import type { LeadStatus } from "@/generated/prisma/client";
+import { saveLead } from "@/lib/admin/actions";
 import { eur, remaining, SOURCE_LABELS, STATUS_LABELS, STATUSES, totalsByStatus } from "@/lib/admin/leads";
 import { getDb } from "@/lib/db";
 import { cn } from "@/lib/utils";
@@ -21,7 +24,7 @@ export default async function LeadsPage({ searchParams }: PageProps<"/admin/lead
   return (
     <>
       <PageHeader title="Leads & budgets" description="Demandes de l'estimateur, du formulaire et projets clients. Montants en EUR.">
-        <Link href="/admin/leads/new" className={buttonClass("primary", "px-4 py-2.5")}>
+        <Link href="/admin/leads?new=1" scroll={false} className={buttonClass("primary", "px-4 py-2.5")}>
           <Plus className="size-4" aria-hidden /> Nouveau projet
         </Link>
       </PageHeader>
@@ -74,6 +77,13 @@ export default async function LeadsPage({ searchParams }: PageProps<"/admin/lead
           </tbody>
         </table>
       </div>
+      {sp.new ? (
+        <Modal title="Nouveau projet client" closeHref="/admin/leads">
+          <div className="pb-6">
+            <LeadForm action={saveLead.bind(null, null)} lead={{ status: "DISCUSSION", amountPaid: 0 }} />
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 }

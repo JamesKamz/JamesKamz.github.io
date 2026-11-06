@@ -12,7 +12,8 @@ function entry(href: Href, priority: number, lastModified?: Date): MetadataRoute
   const languages = Object.fromEntries(routing.locales.map((l) => [l, absoluteUrl(getPathname({ locale: l, href }))]));
   return routing.locales.map((locale) => ({
     url: absoluteUrl(getPathname({ locale, href })),
-    lastModified: lastModified ?? new Date(),
+    // Only real modification dates: a fake "now" on every crawl makes search engines ignore lastmod.
+    ...(lastModified ? { lastModified } : {}),
     changeFrequency: "monthly",
     priority,
     alternates: { languages },
@@ -27,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...entry("/budget", 0.8),
     ...entry("/about", 0.7),
     ...entry("/contact", 0.7),
-    ...projects.flatMap((p) => entry({ pathname: "/projects/[slug]", params: { slug: p.slug } }, 0.6)),
+    ...projects.flatMap((p) => entry({ pathname: "/projects/[slug]", params: { slug: p.slug } }, 0.6, p.updatedAt)),
     ...entry("/legal", 0.2),
     ...entry("/privacy", 0.2),
   ];

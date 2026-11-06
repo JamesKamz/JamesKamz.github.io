@@ -5,17 +5,16 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const isDev = process.env.NODE_ENV !== "production";
 
-// Content-Security-Policy: images from YouTube thumbnails and Vercel Blob uploads,
-// frames from YouTube (nocookie) only. 'unsafe-inline' scripts are required by the
+// Content-Security-Policy: images from Vercel Blob uploads, no third-party frames. 'unsafe-inline' scripts are required by the
 // theme bootstrap snippet and Next.js inline runtime.
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://i.ytimg.com https://yt3.ggpht.com https://*.public.blob.vercel-storage.com",
+  "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com",
   "font-src 'self' data:",
   `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
-  "frame-src https://www.youtube-nocookie.com",
+  "frame-src 'none'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -41,8 +40,6 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      { protocol: "https", hostname: "i.ytimg.com" },
-      { protocol: "https", hostname: "yt3.ggpht.com" },
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },

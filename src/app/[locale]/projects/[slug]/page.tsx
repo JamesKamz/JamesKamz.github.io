@@ -4,13 +4,15 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/BrandIcon";
+import { JsonLdScript } from "@/components/site/JsonLd";
 import { Reveal } from "@/components/site/Reveal";
 import { buttonClass } from "@/components/ui/Button";
-import { Link } from "@/i18n/navigation";
+import { getPathname, Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { getProject, getProjects } from "@/lib/content";
-import { alternates } from "@/lib/seo";
-import { loc } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
+import { loc, type Locale } from "@/lib/types";
+import { absoluteUrl, SITE_URL } from "@/lib/utils";
 
 export const revalidate = 3600;
 
@@ -25,22 +27,25 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
   if (!project) return {};
   const title = loc(project, "title", locale);
   const description = loc(project, "summary", locale);
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: alternates({ pathname: "/projects/[slug]", params: { slug } }, locale),
-    openGraph: { title, description, images: project.coverImage ? [{ url: project.coverImage }] : undefined },
-  };
+    href: { pathname: "/projects/[slug]", params: { slug } },
+    locale,
+    type: "article",
+    images: project.coverImage ? [project.coverImage] : undefined,
+  });
 }
 
 export default async function ProjectPage({ params }: PageProps<"/[locale]/projects/[slug]">) {
   const { locale, slug } = await params;
-  setRequestLocale(locale as "fr" | "en");
-  const [project, projects, t, tc] = await Promise.all([
+  setRequestLocale(locale as Locale);
+  const [project, projects, t, tc, tn] = await Promise.all([
     getProject(slug),
     getProjects(),
     getTranslations("projects"),
     getTranslations("common"),
+    getTranslations("nav"),
   ]);
   if (!project) notFound();
 
@@ -54,11 +59,41 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
   ];
   const gallery = project.gallery.filter((src) => src !== project.coverImage);
 
+  const url = (href: Parameters<typeof getPathname>[0]["href"]) => absoluteUrl(getPathname({ locale: locale as Locale, href }));
+  const pageUrl = url({ pathname: "/projects/[slug]", params: { slug } });
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: tn("home"), item: url("/") },
+          { "@type": "ListItem", position: 2, name: tn("projects"), item: url("/projects") },
+          { "@type": "ListItem", position: 3, name: title, item: pageUrl },
+        ],
+      },
+      {
+        "@type": "CreativeWork",
+        "@id": `${pageUrl}#work`,
+        name: title,
+        headline: title,
+        description: loc(project, "summary", locale),
+        url: pageUrl,
+        inLanguage: locale,
+        image: project.coverImage ? absoluteUrl(project.coverImage) : undefined,
+        dateCreated: project.year ? String(project.year) : undefined,
+        keywords: project.stack.join(", "),
+        author: { "@id": `${SITE_URL}/#person` },
+      },
+    ],
+  };
+
   return (
     <article className="pt-28">
+      <JsonLdScript data={structuredData} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Link href="/projects" className="inline-flex items-center gap-2 font-mono text-sm text-muted hover:text-accent">
-          <ArrowLeft className="size-4" aria-hidden /> {tc("back")}
+          <ArrowLeft className="size-4 rtl:-scale-x-100" aria-hidden /> {tc("back")}
         </Link>
 
         <header className="mt-8 grid gap-8 lg:grid-cols-12 lg:items-end">
@@ -158,7 +193,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
                 {loc(next, "title", locale)}
               </span>
             </span>
-            <ArrowRight className="size-8 shrink-0 transition group-hover:translate-x-2 group-hover:text-accent" aria-hidden />
+            <ArrowRight className="size-8 shrink-0 transition group-hover:translate-x-2 group-hover:text-accent rtl:-scale-x-100 rtl:group-hover:-translate-x-2" aria-hidden />
           </Link>
         ) : null}
       </div>

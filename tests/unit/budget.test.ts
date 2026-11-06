@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   computeEstimate,
+  currencyForTimeZone,
   defaultPricing,
   EstimateError,
   parsePricing,
@@ -10,7 +11,7 @@ import {
 } from "@/lib/budget";
 
 const pricing: PricingConfig = {
-  rates: { EUR: 1, MAD: 10, USD: 1.1 },
+  rates: { EUR: 1, MAD: 10, USD: 1.1, XOF: 655.957 },
   spread: 0.2,
   projectTypes: [{ key: "saas", labelFr: "SaaS", labelEn: "SaaS", base: 4000 }],
   features: [
@@ -88,5 +89,29 @@ describe("pricing config", () => {
   it("rejects negative prices and bad keys", () => {
     const bad = { ...pricing, projectTypes: [{ key: "Bad Key", labelFr: "x", labelEn: "x", base: -1 }] };
     expect(pricingSchema.safeParse(bad).success).toBe(false);
+  });
+});
+
+describe("visitor currency", () => {
+  it("quotes MAD in Morocco, CFA in West Africa, USD everywhere else", () => {
+    expect(currencyForTimeZone("Africa/Casablanca")).toBe("MAD");
+    expect(currencyForTimeZone("Africa/Lome")).toBe("XOF");
+    expect(currencyForTimeZone("Africa/Abidjan")).toBe("XOF");
+    expect(currencyForTimeZone("Africa/Dakar")).toBe("XOF");
+    expect(currencyForTimeZone("Europe/Paris")).toBe("USD");
+    expect(currencyForTimeZone("Africa/Nairobi")).toBe("USD");
+    expect(currencyForTimeZone("America/New_York")).toBe("USD");
+    expect(currencyForTimeZone(undefined)).toBe("USD");
+  });
+
+  it("converts to CFA francs at the fixed peg, rounded to friendly steps", () => {
+    const e = computeEstimate(pricing, { projectType: "saas", features: [], timeline: "standard", design: "custom" });
+    expect(e.ranges.XOF.min % 50_000).toBe(0);
+    expect(e.ranges.XOF.min).toBe(Math.round((e.central * 0.8 * 655.957) / 50_000) * 50_000);
+  });
+
+  it("parses saved configs that predate the XOF rate", () => {
+    const { XOF: _x, ...oldRates } = pricing.rates;
+    expect(parsePricing({ ...pricing, rates: oldRates }).rates.XOF).toBe(655.957);
   });
 });

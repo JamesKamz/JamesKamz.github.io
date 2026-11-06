@@ -31,6 +31,8 @@ export type Field = {
   rows?: number;
   nullable?: boolean;
   step?: string;
+  /** Text direction of the input (Arabic fields). */
+  dir?: "rtl";
 };
 
 export type Resource = {
@@ -50,9 +52,11 @@ export type Resource = {
 };
 
 const icons = iconNames.map((n) => ({ value: n, label: n }));
+const AR_HELP = "Optionnel : vide = texte anglais affiché";
 const bilingual = (name: string, label: string, type: FieldType = "text", extra: Partial<Field> = {}): Field[] => [
   { name: `${name}Fr`, label: `${label} (FR)`, type, required: true, ...extra },
   { name: `${name}En`, label: `${label} (EN)`, type, required: true, ...extra },
+  { name: `${name}Ar`, label: `${label} (AR)`, type, ...extra, dir: "rtl", help: AR_HELP },
 ];
 const order: Field = { name: "order", label: "Ordre d'affichage", type: "number", help: "Plus petit = affiché en premier" };
 
@@ -104,7 +108,7 @@ export const resources: Resource[] = [
     title: "Témoignages",
     singular: "témoignage",
     description: "N'affichez que de vrais avis. Les exemples sont marqués et non publiés.",
-    columns: ["authorName", "platform", "rating", "order"],
+    columns: ["authorName", "project", "rating", "order"],
     toggles: ["published"],
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
     fields: [
@@ -124,8 +128,11 @@ export const resources: Resource[] = [
       },
       { name: "rating", label: "Note (1–5)", type: "number", required: true },
       { name: "sourceUrl", label: "Lien vers l'avis source", type: "url", nullable: true },
+      { name: "project", label: "Projet", type: "text", nullable: true },
+      { name: "email", label: "E-mail du client", type: "email", nullable: true, help: "Privé : jamais affiché sur le site" },
       { name: "textFr", label: "Texte (FR)", type: "textarea", required: true, rows: 4 },
       { name: "textEn", label: "Texte (EN)", type: "textarea", nullable: true, rows: 4 },
+      { name: "textAr", label: "Texte (AR)", type: "textarea", nullable: true, rows: 4, dir: "rtl", help: AR_HELP },
       order,
       { name: "isExample", label: "Exemple (à remplacer)", type: "boolean" },
       { name: "published", label: "Publié", type: "boolean" },
@@ -251,14 +258,19 @@ export const settingsFields: Field[] = [
   { name: "alias", label: "Alias", type: "text", required: true },
   { name: "titlesFr", label: "Titres rotatifs (FR)", type: "tags", required: true, help: "Séparés par des virgules" },
   { name: "titlesEn", label: "Titres rotatifs (EN)", type: "tags", required: true },
+  { name: "titlesAr", label: "Titres rotatifs (AR)", type: "tags", dir: "rtl", help: AR_HELP },
   { name: "taglineFr", label: "Accroche (FR)", type: "textarea", required: true, rows: 3 },
   { name: "taglineEn", label: "Accroche (EN)", type: "textarea", required: true, rows: 3 },
+  { name: "taglineAr", label: "Accroche (AR)", type: "textarea", rows: 3, dir: "rtl", help: AR_HELP },
   { name: "aboutFr", label: "À propos (FR)", type: "textarea", required: true, rows: 8, help: "Paragraphes séparés par une ligne vide" },
   { name: "aboutEn", label: "À propos (EN)", type: "textarea", required: true, rows: 8 },
+  { name: "aboutAr", label: "À propos (AR)", type: "textarea", rows: 8, dir: "rtl", help: AR_HELP },
   { name: "locationFr", label: "Localisation (FR)", type: "text", required: true, help: "ex. Casablanca, Maroc" },
   { name: "locationEn", label: "Localisation (EN)", type: "text", required: true },
+  { name: "locationAr", label: "Localisation (AR)", type: "text", dir: "rtl", help: AR_HELP },
   { name: "availabilityFr", label: "Disponibilité (FR)", type: "text", required: true },
   { name: "availabilityEn", label: "Disponibilité (EN)", type: "text", required: true },
+  { name: "availabilityAr", label: "Disponibilité (AR)", type: "text", dir: "rtl", help: AR_HELP },
   { name: "available", label: "Disponible en freelance", type: "boolean" },
   { name: "email", label: "Email de contact", type: "email", required: true },
   { name: "phone", label: "Téléphone", type: "text", nullable: true },
@@ -278,4 +290,5 @@ export const settingsFields: Field[] = [
   { name: "chatbotEnabled", label: "Chatbot activé", type: "boolean" },
   { name: "chatbotInstructionsFr", label: "Instructions du chatbot (FR)", type: "textarea", required: true, rows: 8, wide: true },
   { name: "chatbotInstructionsEn", label: "Instructions du chatbot (EN)", type: "textarea", required: true, rows: 8, wide: true },
+  { name: "chatbotInstructionsAr", label: "Instructions du chatbot (AR)", type: "textarea", rows: 8, wide: true, dir: "rtl", help: AR_HELP },
 ];

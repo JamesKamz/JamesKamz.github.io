@@ -1,8 +1,8 @@
 import type { SettingsView } from "@/lib/types";
-import { loc } from "@/lib/types";
+import { loc, locList } from "@/lib/types";
 import { SITE_URL, absoluteUrl } from "@/lib/utils";
 
-/** Structured data: Person + ProfessionalService. */
+/** Structured data: WebSite + Person + ProfessionalService. */
 export function JsonLd({ settings, locale }: { settings: SettingsView; locale: string }) {
   const sameAs = [
     settings.linkedin,
@@ -13,10 +13,18 @@ export function JsonLd({ settings, locale }: { settings: SettingsView; locale: s
     settings.comeup,
     settings.upwork,
   ].filter(Boolean);
-  const titles = locale === "en" ? settings.titlesEn : settings.titlesFr;
+  const titles = locList(settings, "titles", locale);
   const data = {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: settings.alias,
+        url: SITE_URL,
+        inLanguage: ["fr", "en", "ar"],
+        publisher: { "@id": `${SITE_URL}/#person` },
+      },
       {
         "@type": "Person",
         "@id": `${SITE_URL}/#person`,
@@ -29,7 +37,7 @@ export function JsonLd({ settings, locale }: { settings: SettingsView; locale: s
         image: settings.photoUrl ? absoluteUrl(settings.photoUrl) : undefined,
         address: { "@type": "PostalAddress", addressCountry: "MA", addressLocality: loc(settings, "location", locale) },
         sameAs,
-        knowsAbout: ["SaaS", "Next.js", "React", "Django", "FastAPI", "Odoo", "Automation", "n8n", "PostgreSQL"],
+        knowsAbout: ["SaaS", "Full-stack development", "Web applications", "Odoo", "Artificial intelligence", "AI chatbots", "Python", "Next.js", "Automation"],
       },
       {
         "@type": "ProfessionalService",
@@ -41,10 +49,15 @@ export function JsonLd({ settings, locale }: { settings: SettingsView; locale: s
         areaServed: "Worldwide",
         address: { "@type": "PostalAddress", addressCountry: "MA" },
         priceRange: "€€",
-        availableLanguage: ["fr", "en"],
+        availableLanguage: ["fr", "en", "ar"],
       },
     ],
   };
+  return <JsonLdScript data={data} />;
+}
+
+/** Renders any schema.org object as a JSON-LD script. */
+export function JsonLdScript({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"

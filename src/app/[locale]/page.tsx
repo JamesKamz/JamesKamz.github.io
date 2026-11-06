@@ -17,13 +17,13 @@ import {
   getStats,
   getTestimonials,
 } from "@/lib/content";
-import { getYoutubeChannel } from "@/lib/youtube";
+import type { Locale } from "@/lib/types";
 
 export const revalidate = 3600;
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
-  setRequestLocale(locale as "fr" | "en");
+  setRequestLocale(locale as Locale);
   const [settings, stats, services, projects, testimonials, skills, t, tc] = await Promise.all([
     getSettings(),
     getStats(),
@@ -34,15 +34,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     getTranslations("projects"),
     getTranslations("common"),
   ]);
-  const channel = await getYoutubeChannel(settings.youtubeHandle ?? "");
-  const liveStats = stats.map((s) =>
-    s.key === "youtubeSubscribers" && channel?.subscribers ? { ...s, value: channel.subscribers, visible: true } : s,
-  );
 
   return (
     <>
-      <Hero settings={settings} stats={liveStats} locale={locale} />
-      <Stats stats={liveStats} locale={locale} />
+      <Hero settings={settings} stats={stats} locale={locale} />
+      <Stats stats={stats} locale={locale} />
       <Services services={services} locale={locale} />
 
       <section id="projects" className="scroll-mt-20 border-t border-line py-24 sm:py-32">
@@ -58,7 +54,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       </section>
 
       <Testimonials testimonials={testimonials} settings={settings} locale={locale} />
-      <Youtube channel={channel} settings={settings} stats={liveStats} locale={locale} />
+      <Youtube settings={settings} />
       <Skills groups={skills} locale={locale} />
       <div className="pt-8 pb-8">
         <CtaBand />

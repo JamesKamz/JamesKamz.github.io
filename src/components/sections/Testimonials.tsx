@@ -52,7 +52,7 @@ export async function Testimonials({
             {testimonials.map((item, i) => (
               <li key={item.id} className="mb-5 break-inside-avoid">
                 <Reveal delay={(i % 3) * 0.08} className="card relative p-6">
-                  <Quote className="absolute right-5 top-5 size-8 text-line-strong" aria-hidden />
+                  <Quote className="absolute end-5 top-5 size-8 text-line-strong" aria-hidden />
                   <div className="flex gap-0.5 text-accent" role="img" aria-label={t("rating", { rating: item.rating })}>
                     {Array.from({ length: 5 }, (_, s) => (
                       <Star key={s} className={`size-4 ${s < item.rating ? "fill-current" : "opacity-30"}`} aria-hidden />
@@ -63,10 +63,10 @@ export async function Testimonials({
                     <div>
                       <p className="font-medium">{item.authorName}</p>
                       <p className="font-mono text-xs text-muted">
-                        {[item.authorRole, item.country].filter(Boolean).join(" · ")}
+                        {[item.authorRole, item.project, item.country].filter(Boolean).join(" · ")}
                       </p>
                     </div>
-                    <div className="text-right font-mono text-xs">
+                    <div className="text-end font-mono text-xs">
                       <p className="text-accent-2">{t(`platform.${item.platform}`)}</p>
                       {item.sourceUrl ? (
                         <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-muted underline-offset-2 hover:text-accent hover:underline">

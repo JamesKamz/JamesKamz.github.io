@@ -27,41 +27,47 @@ model User {
 
 /// Singleton row (id = "main") holding identity, links and chatbot settings.
 model SiteSettings {
-  id                   String   @id @default("main")
-  fullName             String
-  alias                String
-  titlesFr             String[]
-  titlesEn             String[]
-  taglineFr            String
-  taglineEn            String
-  aboutFr              String
-  aboutEn              String
-  locationFr           String
-  locationEn           String
-  available            Boolean  @default(true)
-  availabilityFr       String
-  availabilityEn       String
-  email                String
-  phone                String?
-  whatsapp             String?
-  linkedin             String?
-  github               String?
-  youtube              String?
-  youtubeHandle        String?
-  facebook             String?
-  instagram            String?
-  comeup               String?
-  upwork               String?
-  comeupSince          Int?
-  photoUrl             String?
-  cvFrUrl              String?
-  cvEnUrl              String?
-  chatbotEnabled       Boolean  @default(true)
+  id                    String   @id @default("main")
+  fullName              String
+  alias                 String
+  titlesFr              String[]
+  titlesEn              String[]
+  titlesAr              String[] @default([])
+  taglineFr             String
+  taglineEn             String
+  taglineAr             String   @default("")
+  aboutFr               String
+  aboutEn               String
+  aboutAr               String   @default("")
+  locationFr            String
+  locationEn            String
+  locationAr            String   @default("")
+  available             Boolean  @default(true)
+  availabilityFr        String
+  availabilityEn        String
+  availabilityAr        String   @default("")
+  email                 String
+  phone                 String?
+  whatsapp              String?
+  linkedin              String?
+  github                String?
+  youtube               String?
+  youtubeHandle         String?
+  facebook              String?
+  instagram             String?
+  comeup                String?
+  upwork                String?
+  comeupSince           Int?
+  photoUrl              String?
+  cvFrUrl               String?
+  cvEnUrl               String?
+  chatbotEnabled        Boolean  @default(true)
   chatbotInstructionsFr String
   chatbotInstructionsEn String
+  chatbotInstructionsAr String   @default("")
   /// Budget estimator pricing (see src/lib/budget.ts → PricingConfig)
-  pricing              Json
-  updatedAt            DateTime @updatedAt
+  pricing               Json
+  updatedAt             DateTime @updatedAt
 }
 
 model Stat {
@@ -69,6 +75,7 @@ model Stat {
   key      String  @unique
   labelFr  String
   labelEn  String
+  labelAr  String  @default("")
   value    Float
   prefix   String  @default("")
   suffix   String  @default("")
@@ -83,8 +90,10 @@ model Service {
   icon      String
   titleFr   String
   titleEn   String
+  titleAr   String   @default("")
   descFr    String
   descEn    String
+  descAr    String   @default("")
   tags      String[]
   /// Bento cell size: "lg" | "md" | "sm"
   size      String   @default("md")
@@ -105,14 +114,19 @@ model Project {
   slug       String            @unique
   titleFr    String
   titleEn    String
+  titleAr    String            @default("")
   summaryFr  String
   summaryEn  String
+  summaryAr  String            @default("")
   problemFr  String
   problemEn  String
+  problemAr  String            @default("")
   solutionFr String
   solutionEn String
+  solutionAr String            @default("")
   resultFr   String
   resultEn   String
+  resultAr   String            @default("")
   categories ProjectCategory[]
   stack      String[]
   liveUrl    String?
@@ -134,19 +148,40 @@ enum Platform {
 }
 
 model Testimonial {
-  id         String   @id @default(cuid())
+  id         String             @id @default(cuid())
   authorName String
   authorRole String?
   country    String?
-  platform   Platform @default(DIRECT)
-  rating     Int      @default(5)
+  platform   Platform           @default(DIRECT)
+  rating     Int                @default(5)
   textFr     String
   textEn     String?
+  textAr     String?
   sourceUrl  String?
-  isExample  Boolean  @default(false)
-  published  Boolean  @default(false)
-  order      Int      @default(0)
-  createdAt  DateTime @default(now())
+  /// Project the client worked on with James (optional).
+  project    String?
+  /// Private: never shown on the site.
+  email      String?
+  isExample  Boolean            @default(false)
+  published  Boolean            @default(false)
+  order      Int                @default(0)
+  createdAt  DateTime           @default(now())
+  invite     TestimonialInvite?
+}
+
+/// Single-use link sent to a past client so they can write their own testimonial.
+model TestimonialInvite {
+  id            String       @id @default(cuid())
+  token         String       @unique
+  name          String?
+  email         String?
+  project       String?
+  locale        String       @default("fr")
+  createdAt     DateTime     @default(now())
+  expiresAt     DateTime
+  usedAt        DateTime?
+  testimonialId String?      @unique
+  testimonial   Testimonial? @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
 }
 
 model SkillGroup {
@@ -155,6 +190,7 @@ model SkillGroup {
   icon   String
   nameFr String
   nameEn String
+  nameAr String   @default("")
   items  String[]
   order  Int      @default(0)
 }
@@ -170,9 +206,11 @@ model Experience {
   kind      ExperienceKind @default(WORK)
   roleFr    String
   roleEn    String
+  roleAr    String         @default("")
   company   String
   descFr    String
   descEn    String
+  descAr    String         @default("")
   startDate DateTime
   endDate   DateTime?
   order     Int            @default(0)
@@ -182,8 +220,10 @@ model FaqEntry {
   id         String  @id @default(cuid())
   questionFr String
   questionEn String
+  questionAr String  @default("")
   answerFr   String
   answerEn   String
+  answerAr   String  @default("")
   published  Boolean @default(true)
   order      Int     @default(0)
 }
@@ -274,4 +314,23 @@ model RateLimit {
   key     String   @id
   count   Int      @default(0)
   resetAt DateTime
+}
+
+/// One public page view. No cookies and no raw IP: visitorId is a salted hash of IP + user agent.
+model PageView {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  path      String
+  locale    String
+  /// External referrer host only (e.g. "google.com").
+  referrer  String?
+  visitorId String
+  country   String?
+  city      String?
+  device    String
+  browser   String?
+  os        String?
+
+  @@index([createdAt])
+  @@index([visitorId])
 }

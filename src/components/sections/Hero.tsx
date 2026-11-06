@@ -48,7 +48,7 @@ export async function Hero({ settings, stats, locale }: { settings: SettingsView
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/contact" className={buttonClass("primary")}>
               {tc("startProject")}
-              <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
+              <ArrowRight className="size-4 transition group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" aria-hidden />
             </Link>
             <Link href="/budget" className={buttonClass("secondary")}>
               <Calculator className="size-4" aria-hidden />
@@ -81,12 +81,12 @@ export async function Hero({ settings, stats, locale }: { settings: SettingsView
         </div>
 
         <div className="lg:col-span-5 lg:pt-10">
-          <figure className="card relative mx-auto max-w-md overflow-hidden shadow-2xl shadow-black/30 lg:ml-auto lg:rotate-[1.5deg]">
+          <figure className="card relative mx-auto max-w-md overflow-hidden shadow-2xl shadow-black/30 lg:ms-auto lg:rotate-[1.5deg]">
             <div className="flex items-center gap-2 border-b border-line px-4 py-3">
               <span className="size-3 rounded-full bg-[#ff5f57]" />
               <span className="size-3 rounded-full bg-[#febc2e]" />
               <span className="size-3 rounded-full bg-[#28c840]" />
-              <span className="ml-3 font-mono text-xs text-muted">~/james-kamz/profile.webp</span>
+              <span className="ms-3 font-mono text-xs text-muted">~/james-kamz/profile.webp</span>
             </div>
             <div className="relative aspect-square bg-surface-2">
               {settings.photoUrl ? (

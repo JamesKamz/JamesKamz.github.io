@@ -5,13 +5,12 @@ import {
   Boxes,
   Briefcase,
   Calculator,
-  ExternalLink,
   FolderKanban,
   HelpCircle,
   LayoutDashboard,
-  LogOut,
+  LineChart,
   Mail,
-  Menu,
+  MailPlus,
   MessagesSquare,
   Quote,
   Settings,
@@ -21,7 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
 const groups = [
@@ -29,6 +28,7 @@ const groups = [
     label: "Activité",
     items: [
       { href: "/admin", label: "Vue d'ensemble", icon: LayoutDashboard },
+      { href: "/admin/analytics", label: "Statistiques", icon: LineChart },
       { href: "/admin/leads", label: "Leads & budgets", icon: Briefcase },
       { href: "/admin/messages", label: "Messages", icon: Mail },
       { href: "/admin/conversations", label: "Conversations IA", icon: MessagesSquare },
@@ -39,6 +39,7 @@ const groups = [
     items: [
       { href: "/admin/projects", label: "Projets", icon: FolderKanban },
       { href: "/admin/testimonials", label: "Témoignages", icon: Quote },
+      { href: "/admin/invitations", label: "Inviter un client", icon: MailPlus },
       { href: "/admin/services", label: "Services", icon: Sparkles },
       { href: "/admin/skills", label: "Compétences", icon: Wrench },
       { href: "/admin/experiences", label: "Expériences", icon: Boxes },
@@ -55,68 +56,95 @@ const groups = [
   },
 ];
 
-export function Sidebar({ email, signOutAction }: { email: string; signOutAction: () => Promise<void> }) {
+// Desktop collapsed state, persisted per browser.
+const KEY = "admin-sidebar";
+const EVENT = "admin-sidebar-change";
+export function subscribe(callback: () => void) {
+  window.addEventListener(EVENT, callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener(EVENT, callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+export function getCollapsed() {
+  try {
+    return localStorage.getItem(KEY) === "collapsed";
+  } catch {
+    return false;
+  }
+}
+export function setCollapsed(value: boolean) {
+  try {
+    localStorage.setItem(KEY, value ? "collapsed" : "expanded");
+  } catch {
+    /* storage unavailable */
+  }
+  window.dispatchEvent(new Event(EVENT));
+}
+
+export function Sidebar({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const stored = useSyncExternalStore(subscribe, getCollapsed, () => false);
+  // The mobile drawer always shows labels.
+  const collapsed = stored && !open;
   const isActive = (href: string) => (href === "/admin" ? pathname === href : pathname.startsWith(href));
+  const rowClass = "flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition";
 
   return (
     <>
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 backdrop-blur lg:hidden">
-        <span className="font-mono text-sm">jk/admin</span>
-        <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Menu" className="grid size-9 place-items-center rounded-lg border border-line">
-          {open ? <X className="size-4" /> : <Menu className="size-4" />}
-        </button>
-      </div>
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-line bg-bg-elev transition-transform lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-line bg-bg-elev transition-[transform,width] duration-200 lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
+          collapsed ? "lg:w-[76px]" : "lg:w-64",
         )}
       >
-        <div className="flex items-center gap-2 px-5 py-5">
-          <span className="grid size-8 place-items-center rounded-lg bg-accent font-display font-bold text-accent-fg">JK</span>
-          <span className="font-mono text-sm">
+        <div className={cn("mb-4 flex h-16 shrink-0 items-center gap-2 border-b border-line px-4", collapsed && "lg:justify-center lg:px-0")}>
+          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-accent font-display font-bold text-accent-fg">JK</span>
+          <span className={cn("font-mono text-sm", collapsed && "lg:hidden")}>
             admin<span className="text-accent">.</span>
           </span>
+          <button type="button" onClick={() => setOpen(false)} aria-label="Fermer le menu" className="ml-auto grid size-9 place-items-center rounded-lg text-muted hover:bg-surface lg:hidden">
+            <X className="size-4" />
+          </button>
         </div>
-        <nav className="flex-1 overflow-y-auto px-3 pb-4" aria-label="Admin">
+
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-4" aria-label="Admin">
           {groups.map((g) => (
-            <div key={g.label} className="mt-4">
-              <p className="px-3 font-mono text-[10px] uppercase tracking-widest text-muted">{g.label}</p>
-              <ul className="mt-2 space-y-0.5">
-                {g.items.map(({ href, label, icon: Ico }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition",
-                        isActive(href) ? "bg-surface-2 text-fg" : "text-fg-soft hover:bg-surface hover:text-fg",
-                      )}
-                    >
-                      <Ico className={cn("size-4", isActive(href) && "text-accent")} aria-hidden />
-                      {label}
-                    </Link>
-                  </li>
-                ))}
+            <div key={g.label} className="mt-4 first:mt-0">
+              <p className={cn("px-3 font-mono text-[10px] uppercase tracking-widest text-muted", collapsed && "lg:sr-only")}>{g.label}</p>
+              <ul className="mt-2 space-y-1">
+                {g.items.map(({ href, label, icon: Ico }) => {
+                  const active = isActive(href);
+                  return (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        onClick={() => setOpen(false)}
+                        title={collapsed ? label : undefined}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          rowClass,
+                          "relative",
+                          collapsed && "lg:justify-center lg:px-0",
+                          active ? "bg-accent/10 font-medium text-fg" : "text-fg-soft hover:bg-surface hover:text-fg",
+                        )}
+                      >
+                        {active ? <span className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-accent" aria-hidden /> : null}
+                        <Ico className={cn("size-[18px] shrink-0", active && "text-accent")} aria-hidden />
+                        <span className={cn("truncate", collapsed && "lg:sr-only")}>{label}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </nav>
-        <div className="border-t border-line p-3 text-sm">
-          <a href="/" target="_blank" className="flex items-center gap-3 rounded-lg px-3 py-2 text-fg-soft hover:bg-surface">
-            <ExternalLink className="size-4" aria-hidden /> Voir le site
-          </a>
-          <form action={signOutAction}>
-            <button type="submit" className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-fg-soft hover:bg-surface">
-              <LogOut className="size-4" aria-hidden /> Déconnexion
-            </button>
-          </form>
-          <p className="truncate px-3 pt-2 font-mono text-[11px] text-muted">{email}</p>
-        </div>
       </aside>
-      {open ? <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setOpen(false)} aria-hidden /> : null}
+
+      {open ? <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} aria-hidden /> : null}
     </>
   );
 }

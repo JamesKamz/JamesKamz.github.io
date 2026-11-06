@@ -5,10 +5,28 @@ import { useState } from "react";
 type Datum = { label: string; value: number; count: number };
 
 const eur = (v: number) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v);
+const num = (v: number) => v.toLocaleString("fr-FR");
 
-/** Single-series monthly bar chart (accent hue), hover tooltip + table fallback. */
-export function MonthlyBarChart({ data, title }: { data: Datum[]; title: string }) {
+/** Single-series bar chart (accent hue), hover tooltip + table fallback. */
+export function MonthlyBarChart({
+  data,
+  title,
+  unit = "eur",
+  valueLabel = "Total",
+  countLabel = "Projets",
+  periodLabel = "Mois",
+}: {
+  data: Datum[];
+  title: string;
+  unit?: "eur" | "number";
+  valueLabel?: string;
+  countLabel?: string;
+  periodLabel?: string;
+}) {
   const [hover, setHover] = useState<number | null>(null);
+  const fmt = unit === "eur" ? eur : num;
+  // Thin out x labels on long series (e.g. 30 or 90 days).
+  const labelEvery = Math.ceil(data.length / 12);
   const width = 640;
   const height = 220;
   const pad = { top: 16, right: 8, bottom: 28, left: 56 };
@@ -48,11 +66,13 @@ export function MonthlyBarChart({ data, title }: { data: Datum[]; title: string 
           return (
             <g key={d.label}>
               {/* Hit target larger than the mark */}
-              <rect x={pad.left + i * slot} y={pad.top} width={slot} height={innerH} fill="transparent" onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} tabIndex={0} aria-label={`${d.label} : ${eur(d.value)}`} />
+              <rect x={pad.left + i * slot} y={pad.top} width={slot} height={innerH} fill="transparent" onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} tabIndex={0} aria-label={`${d.label} : ${fmt(d.value)}`} />
               {path ? <path d={path} fill="var(--accent)" opacity={hover === null || hover === i ? 1 : 0.45} pointerEvents="none" /> : null}
-              <text x={x + barW / 2} y={height - 8} textAnchor="middle" fontSize={11} fill="var(--muted)" className="font-mono">
-                {d.label}
-              </text>
+              {i % labelEvery === 0 ? (
+                <text x={x + barW / 2} y={height - 8} textAnchor="middle" fontSize={11} fill="var(--muted)" className="font-mono">
+                  {d.label}
+                </text>
+              ) : null}
             </g>
           );
         })}
@@ -63,8 +83,8 @@ export function MonthlyBarChart({ data, title }: { data: Datum[]; title: string 
           style={{ left: `${((pad.left + hover * slot + slot / 2) / width) * 100}%`, top: 24 }}
         >
           <p className="font-mono text-muted">{data[hover].label}</p>
-          <p className="font-semibold text-fg">{eur(data[hover].value)}</p>
-          <p className="text-muted">{data[hover].count} projet(s)</p>
+          <p className="font-semibold text-fg">{fmt(data[hover].value)} {unit === "number" ? valueLabel.toLowerCase() : ""}</p>
+          <p className="text-muted">{data[hover].count} {countLabel.toLowerCase()}</p>
         </div>
       ) : null}
       <details className="mt-2 text-xs text-muted">
@@ -72,16 +92,16 @@ export function MonthlyBarChart({ data, title }: { data: Datum[]; title: string 
         <table className="mt-2 w-full">
           <thead>
             <tr className="text-left">
-              <th className="py-1 font-medium">Mois</th>
-              <th className="py-1 font-medium">Total</th>
-              <th className="py-1 font-medium">Projets</th>
+              <th className="py-1 font-medium">{periodLabel}</th>
+              <th className="py-1 font-medium">{valueLabel}</th>
+              <th className="py-1 font-medium">{countLabel}</th>
             </tr>
           </thead>
           <tbody>
             {data.map((d) => (
               <tr key={d.label} className="border-t border-line">
                 <td className="py-1">{d.label}</td>
-                <td className="py-1 tabular-nums">{eur(d.value)}</td>
+                <td className="py-1 tabular-nums">{fmt(d.value)}</td>
                 <td className="py-1 tabular-nums">{d.count}</td>
               </tr>
             ))}

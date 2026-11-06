@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "James Kamz — SaaS Builder, Full-Stack Engineer & Odoo Developer",
-    "description": "Koffi Jacques Amouzou (James Kamz) : 5+ ans d'expérience. Je crée des SaaS rentables, j'intègre et personnalise Odoo et j'automatise vos processus métiers. Basé au Maroc, disponible en remote.",
-    "keywords": "James Kamz, Koffi Jacques Amouzou, SaaS builder, développeur full-stack, développeur Odoo, intégrateur Odoo, automatisation n8n, Make, Zapier, Next.js, Django, FastAPI, freelance Maroc"
+    "title": "James Kamz — SaaS Builder & Développeur Full-Stack, Odoo et IA",
+    "description": "Koffi Jacques Amouzou (James Kamz), SaaS builder et développeur Full-Stack à Casablanca. Je conçois et lance des SaaS et applications web sur mesure, connectés à Odoo et enrichis par l'IA. 4 ans d'expérience, plus de 15 projets livrés.",
+    "keywords": "James Kamz, Koffi Jacques Amouzou, SaaS sur mesure, développeur SaaS, développeur full-stack, application web, développeur Odoo, intégration IA, chatbot IA, Next.js, Python, freelance Casablanca, Maroc"
   },
   "nav": {
     "home": "Accueil",
@@ -55,7 +55,7 @@
   "projects": {
     "kicker": "projets",
     "title": "Études de cas",
-    "subtitle": "Une sélection de produits livrés, du SaaS à l'API.",
+    "subtitle": "Des plateformes livrées pour des clients : SaaS, marketplaces, Odoo et IA.",
     "filters": {
       "ALL": "Tous",
       "SAAS": "SaaS",
@@ -74,7 +74,7 @@
     "year": "Année",
     "categories": "Catégories",
     "next": "Projet suivant",
-    "similar": "Un projet similaire ?"
+    "similar": "Vous voulez une plateforme comme celle-ci ?"
   },
   "testimonials": {
     "kicker": "avis",
@@ -91,14 +91,8 @@
     "rating": "Note : {rating} sur 5"
   },
   "youtube": {
-    "kicker": "youtube",
-    "title": "Je partage aussi en vidéo",
-    "subtitle": "Tutoriels, retours d'expérience et coulisses du freelancing tech sur ma chaîne.",
-    "subscribe": "S'abonner",
-    "subscribers": "{count} abonnés",
-    "fallback": "Découvrez mes dernières vidéos directement sur YouTube.",
-    "watch": "Regarder",
-    "subscribersLabel": "abonnés"
+    "text": "Sur ma chaîne YouTube : l'actualité de la cybersécurité et de l'IA, et les sujets qui touchent ces deux domaines.",
+    "watch": "Voir la chaîne"
   },
   "skills": {
     "kicker": "stack",
@@ -154,7 +148,7 @@
   "budget": {
     "kicker": "estimateur",
     "title": "Estimez votre budget",
-    "subtitle": "4 questions, une fourchette indicative en MAD, EUR et USD. Sans engagement.",
+    "subtitle": "4 questions, une fourchette indicative en dollars US, dirhams ou francs CFA. Sans engagement.",
     "step": "Étape {current} sur {total}",
     "steps": {
       "type": "Type de projet",
@@ -172,6 +166,7 @@
     "previous": "Précédent",
     "seeEstimate": "Voir l'estimation",
     "estimate": "Fourchette estimée",
+    "currency": "Devise",
     "disclaimer": "Estimation indicative, non contractuelle. Le prix final est fixé dans un devis après un échange sur votre besoin.",
     "sendTitle": "Recevoir un devis précis",
     "sendSubtitle": "Laissez vos coordonnées : je reviens vers vous avec un devis détaillé.",
@@ -185,9 +180,10 @@
   "chat": {
     "open": "Ouvrir l'assistant",
     "close": "Fermer l'assistant",
+    "launcher": "James Assistant",
     "title": "Assistant James Kamz",
     "subtitle": "IA · répond sur mes services",
-    "welcome": "Bonjour 👋 Je suis l'assistant de James. Posez-moi vos questions sur ses services, ses projets ou votre budget.",
+    "welcome": "Bonjour 👋 Je suis l'assistant de James. Posez-moi vos questions sur ses services, ses projets ou votre budget, ou réservez directement un appel avec lui.",
     "placeholder": "Votre question…",
     "send": "Envoyer",
     "error": "Désolé, je ne peux pas répondre pour le moment. Écrivez à James via la page contact.",
@@ -195,13 +191,13 @@
     "tooLong": "Message trop long (500 caractères max).",
     "disclaimer": "Réponses générées par IA, à titre indicatif.",
     "suggestions": [
+      "Je voudrais réserver un appel",
       "Quels services proposes-tu ?",
-      "Combien coûte un SaaS ?",
-      "Tu travailles avec Odoo ?"
+      "Combien coûte un SaaS ?"
     ]
   },
   "footer": {
-    "tagline": "SaaS · Full-Stack · Odoo · Automatisation",
+    "tagline": "SaaS · Full-Stack · Odoo · IA",
     "rights": "Tous droits réservés.",
     "legal": "Mentions légales",
     "privacy": "Confidentialité",
@@ -212,12 +208,42 @@
     "text": "La commande n'a rien retourné. Cette page n'existe pas (ou plus).",
     "home": "Retour à l'accueil"
   },
+  "review": {
+    "kicker": "témoignage",
+    "title": "Votre avis compte",
+    "subtitle": "Vous avez travaillé avec James ? Racontez en quelques lignes comment s'est passé le projet. Votre témoignage aidera d'autres entreprises à se lancer.",
+    "hello": "Bonjour {name}, merci de prendre ce moment.",
+    "name": "Votre nom",
+    "role": "Votre poste (optionnel)",
+    "company": "Entreprise (optionnel)",
+    "country": "Pays (optionnel)",
+    "project": "Projet réalisé ensemble (optionnel)",
+    "email": "E-mail (optionnel, jamais affiché)",
+    "rating": "Votre note",
+    "star": "{count} sur 5",
+    "message": "Votre témoignage",
+    "messagePlaceholder": "Le besoin de départ, le travail réalisé, le résultat obtenu…",
+    "consent": "J'accepte que ce témoignage soit publié sur ce site avec mon nom, mon poste et mon entreprise.",
+    "send": "Envoyer mon témoignage",
+    "sending": "Envoi…",
+    "success": "Merci beaucoup ! Votre témoignage a bien été reçu. Il sera publié après relecture.",
+    "error": "L'envoi a échoué. Réessayez dans un instant.",
+    "rateLimited": "Trop de tentatives. Réessayez dans quelques minutes.",
+    "invalidTitle": "Lien invalide ou expiré",
+    "invalidText": "Ce lien d'invitation n'est plus valable. Demandez-en un nouveau à James.",
+    "usedTitle": "Témoignage déjà reçu",
+    "usedText": "Ce lien a déjà été utilisé. Merci encore pour votre retour !",
+    "home": "Retour à l'accueil"
+  },
   "validation": {
     "name": "Indiquez votre nom (2 caractères minimum).",
     "email": "Adresse email invalide.",
     "phone": "Numéro invalide.",
     "subject": "Indiquez un sujet (3 caractères minimum).",
     "message": "Votre message doit contenir au moins 10 caractères.",
-    "tooLong": "Texte trop long."
+    "tooLong": "Texte trop long.",
+    "rating": "Choisissez une note de 1 à 5.",
+    "testimonial": "Votre témoignage doit contenir au moins 20 caractères.",
+    "consent": "Cochez la case pour autoriser la publication."
   }
 }

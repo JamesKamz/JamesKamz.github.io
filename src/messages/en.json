@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "James Kamz — SaaS Builder, Full-Stack Engineer & Odoo Developer",
-    "description": "Koffi Jacques Amouzou (James Kamz): 5+ years of experience. I build profitable SaaS products, integrate and tailor Odoo, and automate business processes. Based in Morocco, available remotely worldwide.",
-    "keywords": "James Kamz, Koffi Jacques Amouzou, SaaS builder, full-stack engineer, Odoo developer, Odoo integrator, automation expert, n8n, Make, Zapier, Next.js, Django, FastAPI, freelance Morocco"
+    "title": "James Kamz — SaaS Builder & Full-Stack Developer, Odoo and AI",
+    "description": "Koffi Jacques Amouzou (James Kamz), SaaS builder and Full-Stack developer in Casablanca. I design and launch custom SaaS products and web apps, connected to Odoo and powered by AI. 4 years of experience, 15+ projects delivered.",
+    "keywords": "James Kamz, Koffi Jacques Amouzou, custom SaaS, SaaS developer, full-stack developer, web application, Odoo developer, AI integration, AI chatbot, Next.js, Python, freelance Casablanca, Morocco"
   },
   "nav": {
     "home": "Home",
@@ -55,7 +55,7 @@
   "projects": {
     "kicker": "projects",
     "title": "Case studies",
-    "subtitle": "A selection of shipped products, from SaaS to APIs.",
+    "subtitle": "Platforms delivered for clients: SaaS, marketplaces, Odoo and AI.",
     "filters": {
       "ALL": "All",
       "SAAS": "SaaS",
@@ -74,7 +74,7 @@
     "year": "Year",
     "categories": "Categories",
     "next": "Next project",
-    "similar": "Got a similar project?"
+    "similar": "Want a platform like this one?"
   },
   "testimonials": {
     "kicker": "reviews",
@@ -91,14 +91,8 @@
     "rating": "Rating: {rating} out of 5"
   },
   "youtube": {
-    "kicker": "youtube",
-    "title": "I also share on video",
-    "subtitle": "Tutorials, lessons learned and behind the scenes of tech freelancing on my channel.",
-    "subscribe": "Subscribe",
-    "subscribers": "{count} subscribers",
-    "fallback": "Watch my latest videos directly on YouTube.",
-    "watch": "Watch",
-    "subscribersLabel": "subscribers"
+    "text": "On my YouTube channel: cybersecurity and AI news, and the topics where the two meet.",
+    "watch": "Visit the channel"
   },
   "skills": {
     "kicker": "stack",
@@ -154,7 +148,7 @@
   "budget": {
     "kicker": "estimator",
     "title": "Estimate your budget",
-    "subtitle": "4 questions, an indicative range in MAD, EUR and USD. No commitment.",
+    "subtitle": "4 questions, an indicative range in US dollars, dirhams or CFA francs. No commitment.",
     "step": "Step {current} of {total}",
     "steps": {
       "type": "Project type",
@@ -172,6 +166,7 @@
     "previous": "Back",
     "seeEstimate": "See estimate",
     "estimate": "Estimated range",
+    "currency": "Currency",
     "disclaimer": "Indicative, non-binding estimate. The final price is set in a quote after we discuss your needs.",
     "sendTitle": "Get a precise quote",
     "sendSubtitle": "Leave your details: I'll come back with a detailed quote.",
@@ -185,9 +180,10 @@
   "chat": {
     "open": "Open assistant",
     "close": "Close assistant",
+    "launcher": "James Assistant",
     "title": "James Kamz assistant",
     "subtitle": "AI · answers about my services",
-    "welcome": "Hi 👋 I'm James's assistant. Ask me about his services, projects or your budget.",
+    "welcome": "Hi 👋 I'm James's assistant. Ask me about his services, projects or your budget, or book a call with him right here.",
     "placeholder": "Your question…",
     "send": "Send",
     "error": "Sorry, I can't answer right now. Please reach James through the contact page.",
@@ -195,13 +191,13 @@
     "tooLong": "Message too long (500 characters max).",
     "disclaimer": "AI-generated answers, for guidance only.",
     "suggestions": [
+      "I'd like to book a call",
       "What services do you offer?",
-      "How much does a SaaS cost?",
-      "Do you work with Odoo?"
+      "How much does a SaaS cost?"
     ]
   },
   "footer": {
-    "tagline": "SaaS · Full-Stack · Odoo · Automation",
+    "tagline": "SaaS · Full-Stack · Odoo · AI",
     "rights": "All rights reserved.",
     "legal": "Legal notice",
     "privacy": "Privacy",
@@ -212,12 +208,42 @@
     "text": "The command returned nothing. This page doesn't exist (anymore).",
     "home": "Back to home"
   },
+  "review": {
+    "kicker": "testimonial",
+    "title": "Your feedback matters",
+    "subtitle": "Worked with James? Tell us in a few lines how the project went. Your testimonial will help other businesses get started.",
+    "hello": "Hi {name}, thank you for taking a moment.",
+    "name": "Your name",
+    "role": "Your job title (optional)",
+    "company": "Company (optional)",
+    "country": "Country (optional)",
+    "project": "Project we worked on (optional)",
+    "email": "Email (optional, never shown)",
+    "rating": "Your rating",
+    "star": "{count} out of 5",
+    "message": "Your testimonial",
+    "messagePlaceholder": "The initial need, the work done, the result…",
+    "consent": "I agree that this testimonial may be published on this site with my name, job title and company.",
+    "send": "Send my testimonial",
+    "sending": "Sending…",
+    "success": "Thank you so much! Your testimonial has been received. It will be published after review.",
+    "error": "Sending failed. Please try again in a moment.",
+    "rateLimited": "Too many attempts. Please try again in a few minutes.",
+    "invalidTitle": "Invalid or expired link",
+    "invalidText": "This invitation link is no longer valid. Ask James for a new one.",
+    "usedTitle": "Testimonial already received",
+    "usedText": "This link has already been used. Thanks again for your feedback!",
+    "home": "Back to home"
+  },
   "validation": {
     "name": "Please enter your name (at least 2 characters).",
     "email": "Invalid email address.",
     "phone": "Invalid phone number.",
     "subject": "Please enter a subject (at least 3 characters).",
     "message": "Your message must be at least 10 characters.",
-    "tooLong": "Text too long."
+    "tooLong": "Text too long.",
+    "rating": "Pick a rating from 1 to 5.",
+    "testimonial": "Your testimonial must be at least 20 characters.",
+    "consent": "Tick the box to allow publication."
   }
 }

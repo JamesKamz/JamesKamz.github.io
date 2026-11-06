@@ -27,9 +27,9 @@ test.describe("Budget estimator", () => {
     await page.getByRole("button", { name: "Voir l'estimation" }).click();
 
     const estimate = page.getByTestId("estimate");
-    await expect(estimate).toContainText("EUR");
-    await expect(estimate).toContainText("MAD");
-    await expect(estimate).toContainText("USD");
+    // One quote currency picked from the visitor's location, switchable between USD / MAD / FCFA; never EUR.
+    await expect(estimate).not.toContainText("EUR");
+    for (const c of ["USD", "MAD", "FCFA"]) await expect(estimate.getByRole("button", { name: c })).toBeVisible();
     // Default pricing: (4 500 + 500) × 1 × 1 ± 20 %
     await expect(estimate).toContainText(/4\s000\s€/);
     await expect(estimate).toContainText(/6\s000\s€/);

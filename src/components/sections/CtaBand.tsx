@@ -22,7 +22,7 @@ export async function CtaBand() {
             </Link>
             <Link href="/contact" className={buttonClass("secondary")}>
               {t("secondary")}
-              <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
+              <ArrowRight className="size-4 transition group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" aria-hidden />
             </Link>
           </div>
         </div>
