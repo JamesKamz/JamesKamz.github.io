@@ -140,6 +140,7 @@ const I18N = {
         "portfolio.filters.web": "App. Web",
         "portfolio.filters.api": "API & Backend",
         "portfolio.filters.odoo": "Odoo",
+        "portfolio.inProgress": "En cours de développement · bientôt en ligne",
 
         "about.kicker": "À propos",
         "about.title": "A propos de moi",
@@ -212,6 +213,7 @@ const I18N = {
         "portfolio.filters.web": "Web apps",
         "portfolio.filters.api": "API & Backend",
         "portfolio.filters.odoo": "Odoo",
+        "portfolio.inProgress": "In development · coming soon",
 
         "about.kicker": "About",
         "about.title": "About me",

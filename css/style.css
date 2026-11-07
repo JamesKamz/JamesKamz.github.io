@@ -1016,6 +1016,27 @@ section {
     padding: .7rem;
 }
 
+/* "In development" badge, always visible on top of the project image */
+.status-badge{
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    padding: .35rem .8rem;
+    border-radius: 999px;
+    background: var(--hover-color);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    box-shadow: 0 6px 18px rgba(16,24,40,.18);
+    transition: opacity .3s;
+}
+
+.portfolio-box:hover .status-badge{
+    opacity: 0;
+}
+
 .port-content{
     position: absolute;
     bottom: 0;
